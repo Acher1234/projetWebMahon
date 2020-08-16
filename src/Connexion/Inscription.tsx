@@ -8,7 +8,7 @@ import formData from 'form-data'
 import { ready } from "jquery";
 
 
-class Inscription extends React.Component<{URL:string}, { adress:any,ready:Number,email:string,file:any,name:string,lastName:string,password:string,userName:string}>
+class Inscription extends React.Component<{URL:string}, { adress:any,ready:Number,email:any,file:any,name:string,lastName:string,password:string,userName:string}>
 {
     constructor(props:any)
     {
@@ -16,6 +16,7 @@ class Inscription extends React.Component<{URL:string}, { adress:any,ready:Numbe
     }
     componentWillMount()
     {
+        this.setState({email:"",name:"",lastName:"",password:"",userName:""});
     }
 
     sendData()
@@ -66,7 +67,7 @@ class Inscription extends React.Component<{URL:string}, { adress:any,ready:Numbe
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" id="password" value={this.state.password} placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={}>
+            <Button variant="primary" type="submit" onClick={this.sendData}>
                 submit
             </Button>
         </Form>)
