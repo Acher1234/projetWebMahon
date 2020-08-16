@@ -58,6 +58,9 @@ class App extends React.Component<any, {user: User | null,Connection:boolean}>
              <Header Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
+                        <div>
+                            
+                        </div>
                     </Route>
                     <Route path='/test' exact>
                     </Route>
