@@ -5,7 +5,7 @@ import Header from "./Header";
 import {User} from './Classes'
 import {Button} from 'react-bootstrap'
 import $ from "jquery";
-import ConnectComponant from '../Connexion/InscriptionComponant'
+import ConnectComponant from '../Connexion/ConnectionComponant'
 import Inscription from "../Connexion/Inscription";
 import LocationSearchInput from "../Connexion/localisationInput"
 
@@ -42,7 +42,6 @@ class App extends React.Component<any, {user: User | null,Connection:boolean}>
               xhrFields:{withCredentials:true},
               method:'GET',
               success:function (data) {
-                  alert(data.isConnected)
                   if(data.isConnected)
                   {
                       objet.functionchangeuser()
@@ -58,17 +57,9 @@ class App extends React.Component<any, {user: User | null,Connection:boolean}>
              <Header Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
-                        <div>
-                            
-                        </div>
-                    </Route>
-                    <Route path='/test' exact>
                     </Route>
                     <Route path="/Connect" exact>
                             <ConnectComponant URL={url} function={this.functionchangeuser.bind(this)}></ConnectComponant>
-                    </Route>
-                    <Route path="/t" exact>
-                           <LocationSearchInput changeAdress={(adress:any)=>{}}/>
                     </Route>
                     <Route path="/LogUp" exact>
                         <Inscription URL={url}/>

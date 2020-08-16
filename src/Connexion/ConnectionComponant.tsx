@@ -81,7 +81,7 @@ class ConnectComponant extends React.Component <{function:any,URL:string},{}> {
                 <FormControl className="form" id='UserName' placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
                 <FormControl className="form" id='Password' placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
                 <Button onClick={() => {this.ConnexionLocal()}} type='button' variant="primary" style={{marginLeft: '2vw'}}>Log In</Button>
-                <Link to='/Inscription'><Button style={{marginLeft: '2vw'}}>log Up</Button></Link>
+                <Link to='/logUp'><Button style={{marginLeft: '2vw'}}>log Up</Button></Link>
                 <GoogleLogin
                     clientId="829121400520-g6jc9th3bd6il8opdcfqgqgu10n3ed0f.apps.googleusercontent.com"
                     buttonText="Login"
