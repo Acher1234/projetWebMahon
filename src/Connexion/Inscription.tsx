@@ -3,6 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import {ReactComponent} from "*.svg";
 import {BrowserRouter as Router} from "react-router-dom";
 import LocationSearchInput from './localisationInput'
+import Axios from 'axios'
 
 
 class Inscription extends React.Component<{URL:string}, { adress:any,ready:Number }>
@@ -45,7 +46,7 @@ class Inscription extends React.Component<{URL:string}, { adress:any,ready:Numbe
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" id="password" placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" >
                 submit
             </Button>
         </Form>)
