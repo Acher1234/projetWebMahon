@@ -19,7 +19,6 @@ class LocationSearchInput extends React.Component {
             {this.state.ready == 0 ? "" :     <GooglePlacesAutocomplete
                 onSelect={(description)=>{this.setState({style:{border:'solid 0.3px green'},address:description.description,ready:1});this.props.function(description.description,1)}}
                 inputStyle = {this.state.style}
-
             />}
         </React.Fragment>
         );

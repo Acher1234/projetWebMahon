@@ -18,6 +18,7 @@ class Inscription extends React.Component
     state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:""};
     sendData()
     {
+        alert(this.props.URL)
         var Form = new FormData();
         Form.append('email',this.state.email)
         Form.append('name',this.state.name)
@@ -27,7 +28,7 @@ class Inscription extends React.Component
         Form.append('pic',this.state.file,'pic.jpg')
         Axios({
             method: 'post',
-            url: 'myurl',
+            url: this.props.URL + '/createUser',
             data: Form,
             headers: {'Content-Type': 'multipart/form-data' }
             })
