@@ -37,6 +37,8 @@ class Inscription extends React.Component
                 //handle success
                 console.log(response);
             })
+            .catch((e)=>{alert(e)})
+        console.log('send')
     }
 
     ChangeStateAdress(newadress,readyTemp)
@@ -62,7 +64,7 @@ class Inscription extends React.Component
                 <Form.Control type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});}} placeholder="Enter Name" />
                 <Form.Label>your picture</Form.Label>
                 <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
-                <Form.Control type="file"  onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
+                <Form.Control type="file" id="file"  onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>
