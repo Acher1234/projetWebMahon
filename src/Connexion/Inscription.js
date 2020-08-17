@@ -1,24 +1,21 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import {ReactComponent} from "*.svg";
 import {BrowserRouter as Router} from "react-router-dom";
-import LocationSearchInput from './localisationInput'
+import LocationSearchInput from './LocationSearchInput'
 import Axios from 'axios'
 import formData from 'form-data'
 import { ready } from "jquery";
 
 
-class Inscription extends React.Component<{URL:string}, { adress:any,ready:Number,email:any,file:any,name:string,lastName:string,password:string,userName:string}>
+class Inscription extends React.Component
 {
-    constructor(props:any)
+    constructor(props)
     {
         super(props);
-    }
-    componentWillMount()
-    {
-        this.setState({email:"",name:"",lastName:"",password:"",userName:""});
+        
     }
 
+    state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:""};
     sendData()
     {
         var Form = new FormData();
@@ -34,13 +31,13 @@ class Inscription extends React.Component<{URL:string}, { adress:any,ready:Numbe
             data: Form,
             headers: {'Content-Type': 'multipart/form-data' }
             })
-            .then((response:any)=>{
+            .then((response)=>{
                 //handle success
                 console.log(response);
             })
     }
 
-    ChangeStateAdress(newadress:any,readyTemp:number)
+    ChangeStateAdress(newadress,readyTemp)
     {
         this.setState({adress:newadress,ready:readyTemp})
     }
@@ -51,21 +48,21 @@ class Inscription extends React.Component<{URL:string}, { adress:any,ready:Numbe
         return (<Form>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" id="email" value={this.state.email} placeholder="Enter email" />
+                <Form.Control type="email"  value={this.state.email} onChange={(event)=>{this.setState({email : event.target.value});}} placeholder="Enter email" />
                 <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
                 </Form.Text>
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" id="Prenom" value={this.state.lastName} placeholder="Enter Lastname" />
+                <Form.Control type="text" onChange={(event)=>{this.setState({lastName : event.target.value});}} value={this.state.lastName} placeholder="Enter Lastname" />
                 <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" id="Nom" value={this.state.name} placeholder="Enter Name" />
+                <Form.Control type="text"  value={this.state.name} onChange={(event)=>{this.setState({name : event.target.value});}} placeholder="Enter Name" />
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" id="Username" value={this.state.userName} placeholder="Enter Name" />
+                <Form.Control type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});}} placeholder="Enter Name" />
                 <Form.Label>your picture</Form.Label>
                 <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
-                <Form.Control type="file" id="pic"  onChange={(e:any)=>{this.setState({file:e.target.files[0]})}}/>
+                <Form.Control type="file"  onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" id="password" value={this.state.password} placeholder="Password" />
+                <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>
             <Button variant="primary" type="submit" onClick={this.sendData}>
                 submit

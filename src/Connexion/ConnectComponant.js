@@ -4,11 +4,11 @@ import React from "react";
 import $ from "jquery";
 import GoogleLogin from 'react-google-login';
 import "./connect.css"
-import {User} from "../GlobalPages/Classes";
+import {User} from "../GlobalPages/Class";
 
 
-class ConnectComponant extends React.Component <{function:any,URL:string},{}> {
-    constructor(props:any) {
+class ConnectComponant extends React.Component {
+    constructor(props) {
         super(props);
     }
 
@@ -49,7 +49,7 @@ class ConnectComponant extends React.Component <{function:any,URL:string},{}> {
         })
     }
 
-    async googletokenConnection(reponse:any)
+    async googletokenConnection(reponse)
     {
         var objet = this;
         await $.ajax({

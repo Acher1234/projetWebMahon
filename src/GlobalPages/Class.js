@@ -1,13 +1,13 @@
 class User
 {
-    imagePath:string = "";
-    email:string;
-    nom:string;
-    prenom:string;
-    username:string;
-    adress:string;
+    imagePath = "";
+    email;
+    nom;
+    prenom;
+    username;
+    adress;
     static ImagePath = "../../ImageFile/UserImage";
-    constructor(email:string,nom:string,prenom:string,username:string,adress:string)
+    constructor(email,nom,prenom,username,adress)
     {
         this.email = email;
         this.nom = nom;
@@ -15,18 +15,18 @@ class User
         this.username = username;
         this.adress =adress;
     }
-    changePictures(file:string)
+    changePictures(file)
     {
         this.imagePath = this.imagePath + file;
     }
 }
 class Objet
 {
-    picture:String
-    proprietaireId:String
-    Name:String
-    ValuePerDay:Number
-    constructor(picture:String,proprietaireId:String,Name:String,ValuePerDay:Number) {
+    picture
+    proprietaireId
+    Name
+    ValuePerDay
+    constructor(picture,proprietaireId,Name,ValuePerDay) {
         this.picture = picture
         this.proprietaireId = proprietaireId
         this.Name = Name

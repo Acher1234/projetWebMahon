@@ -4,13 +4,10 @@ import {Navbar,Nav,NavDropdown} from 'react-bootstrap'
 import $ from 'jquery'
 import App from "./App";
 
-class Header extends React.Component<{Connexion:boolean,URL:string}, {redirect:boolean}>
+class Header extends React.Component
 {
-    constructor(props:any) {
+    constructor(props) {
         super(props);
-    }
-    componentWillMount()
-    {
     }
 
     render()

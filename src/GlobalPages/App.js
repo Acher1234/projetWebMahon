@@ -2,19 +2,20 @@ import React from 'react';
 import {Switch,BrowserRouter as Router,Link,Route} from 'react-router-dom'
 import './App.css';
 import Header from "./Header";
-import {User} from './Classes'
+import {User} from './Class'
 import {Button} from 'react-bootstrap'
 import $ from "jquery";
-import ConnectComponant from '../Connexion/ConnectionComponant'
+import ConnectComponant from '../Connexion/ConnectComponant'
 import Inscription from "../Connexion/Inscription";
-import LocationSearchInput from "../Connexion/localisationInput"
+
 
 var url = 'http://localhost:8080';
 
-class App extends React.Component<any, {user: User | null,Connection:boolean}>
+class App extends React.Component
 {
-  constructor(props:any) {
+  constructor(props) {
     super(props);
+    this.state = {Connection:false,user:null}
   }
   functionchangeuser()
   {

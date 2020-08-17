@@ -5,8 +5,8 @@ import 'react-google-places-autocomplete/dist/index.min.css';
 // @ts-ignore
 import Script from 'react-load-script'
 
-class LocationSearchInput extends React.Component<{function:any},any> {
-    constructor(props:any) {
+class LocationSearchInput extends React.Component {
+    constructor(props) {
         super(props);
         this.state = { address: '',ready:0,style:{border:'solid 0.1px black'}};
     }
