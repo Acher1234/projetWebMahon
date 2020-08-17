@@ -16,6 +16,7 @@ class Inscription extends React.Component
     }
 
     state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:""};
+
     sendData()
     {
         alert(this.props.URL)
@@ -65,7 +66,7 @@ class Inscription extends React.Component
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={this.sendData}>
+            <Button variant="primary" onClick={this.sendData.bind(this)}>
                 submit
             </Button>
         </Form>)
