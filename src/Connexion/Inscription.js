@@ -15,18 +15,34 @@ class Inscription extends React.Component
         
     }
 
-    state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:""};
+    state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:"",style:{}};
 
+    verify()
+    {
+        if(this.state.ready == 0 || this.state.adress == "" || this.state.email == "" || this.state.name == "" || this.state.password == "" ||  this.state.userName == "" || this.state.lastName == "")
+        {
+            return false;
+        } 
+        else
+        {
+            return true;
+        }
+    }
     sendData()
     {
+        if(!this.verify())
+        {
+            return null;
+        }
         alert(this.props.URL)
         var Form = new FormData();
-        Form.append('email',this.state.email)
-        Form.append('name',this.state.name)
-        Form.append('lastName',this.state.lastName)
-        Form.append('password',this.state.password)
-        Form.append('userName',this.state.userName)
-        Form.append('pic',this.state.file,'pic.jpg')
+        Form.set('email',this.state.email)
+        Form.set('name',this.state.name)
+        Form.set('lastName',this.state.lastName)
+        Form.set('password',this.state.password)
+        Form.set('userName',this.state.userName)
+        Form.set('address',this.state.adress)
+        Form.set('pic',this.state.file)
         Axios({
             method: 'post',
             url: this.props.URL + '/createUser',
@@ -39,6 +55,26 @@ class Inscription extends React.Component
             })
             .catch((e)=>{alert(e)})
         console.log('send')
+    }
+    verifyUsername(userNameTest)
+    {
+        Axios({
+            method: 'post',
+            url: this.props.URL + '/verifyUsername',
+            data: {userName:userNameTest},
+            })
+            .then((response)=>{
+                console.log(response.data)
+                if(response.data == "ok")
+                {
+                this.setState({style:{borderColor:"green"}})
+                }
+                else
+                {
+                    this.setState({style:{borderColor:"red"}})
+                }
+            })
+            .catch((e)=>{alert(e)})
     }
 
     ChangeStateAdress(newadress,readyTemp)
@@ -61,10 +97,10 @@ class Inscription extends React.Component
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control type="text"  value={this.state.name} onChange={(event)=>{this.setState({name : event.target.value});}} placeholder="Enter Name" />
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});}} placeholder="Enter Name" />
+                <Form.Control style={this.state.style} type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});this.verifyUsername(event.target.value);}} placeholder="Enter Name" />
                 <Form.Label>your picture</Form.Label>
                 <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
-                <Form.Control type="file" id="file"  onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
+                <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>
