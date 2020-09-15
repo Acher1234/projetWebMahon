@@ -32,12 +32,8 @@ class ConnectComponant extends React.Component {
             $("#UserName").addClass("is-invalid");
             return;
         }
-        console.log(password)
-        Axios({
-        method: 'post',
-        url: this.props.URL+'/Login',
-        data: {username:Username,password:password},
-    })
+        Axios.post(this.props.URL+'/Login', {username:Username,password:password},
+        {withCredentials:true})
         .then((response)=>{
             //handle success
             if(response.data == 'error')
@@ -47,12 +43,12 @@ class ConnectComponant extends React.Component {
             }
             else
             {
-                objet.props.function();
+                this.props.function()
+                window.location.href = '/'
+
             }
         })
         .catch((e)=>{alert(e)})
-        console.log('send')
-
     }
 
     async googletokenConnection(reponse)
@@ -67,16 +63,7 @@ class ConnectComponant extends React.Component {
             {
             }
         })
-        await $.ajax(
-            {
-                url:objet.props.URL+'/recupUser',
-                data:{},
-                xhrFields:{withCredentials:true},
-                method:'GET',
-                success:function (data) {
-                    objet.props.function();
-                }
-            })
+        this.props.function()
     }
 
 

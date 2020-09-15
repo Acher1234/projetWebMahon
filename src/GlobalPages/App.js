@@ -26,9 +26,15 @@ class App extends React.Component
               data:{},
               xhrFields:{withCredentials:true},
               method:'GET',
-              success:function (data) {
-                  alert("connected")
-                  objet.setState({Connection:true,user:new User(data.email,data.nom,data.prenom,data.username,data.adress)})
+              success:function (data)
+              {
+                  if(data != null) {
+                      alert("connected")
+                      objet.setState({
+                          Connection: true,
+                          user: new User(data.email, data.nom, data.prenom, data.username, data.adress)
+                      })
+                  }
               }
           })
   }
@@ -37,6 +43,7 @@ class App extends React.Component
   {
       this.setState({Connection:false,user:null})
       var objet = this;
+      alert('test')
       $.ajax(
           {
               url:url+'/isConnected',
