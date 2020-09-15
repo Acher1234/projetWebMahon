@@ -35,7 +35,6 @@ class Inscription extends React.Component
         {
             return null;
         }
-        alert(this.props.URL)
         var Form = new FormData();
         Form.set('email',this.state.email)
         Form.set('name',this.state.name)
@@ -52,7 +51,8 @@ class Inscription extends React.Component
             })
             .then((response)=>{
                 //handle success
-                console.log(response);
+                if(response.data == "perfect")
+                {window.location.href = "http://localhost:3000"}
             })
             .catch((e)=>{alert(e)})
         console.log('send')

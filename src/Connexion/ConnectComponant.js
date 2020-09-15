@@ -5,6 +5,7 @@ import $ from "jquery";
 import GoogleLogin from 'react-google-login';
 import "./connect.css"
 import {User} from "../GlobalPages/Class";
+import cryptojs from "crypto-js";
 
 
 class ConnectComponant extends React.Component {
@@ -33,7 +34,7 @@ class ConnectComponant extends React.Component {
             url:objet.props.URL+'/Login',
             method:'POST',
             xhrFields:{withCredentials:true},
-            data:{userName:Username,Password:password},
+            data:{userName:Username,Password:cryptojs.SHA256(password)},
             success:function (data)
             {
                 if(data == 'error')
