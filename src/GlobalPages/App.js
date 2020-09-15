@@ -27,6 +27,7 @@ class App extends React.Component
               xhrFields:{withCredentials:true},
               method:'GET',
               success:function (data) {
+                  alert("connected")
                   objet.setState({Connection:true,user:new User(data.email,data.nom,data.prenom,data.username,data.adress)})
               }
           })

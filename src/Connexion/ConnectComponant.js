@@ -18,8 +18,7 @@ class ConnectComponant extends React.Component {
     {
         var objet = this;
         var password = $('#Password').val()
-        password = cryptojs.SHA256(password);
-        alert(password)
+        password = cryptojs.SHA256(password).toString();
         var Username = $('#UserName').val()
         $("#Password").removeClass("is-invalid");
         $("#UserName").removeClass("is-invalid");
@@ -33,10 +32,11 @@ class ConnectComponant extends React.Component {
             $("#UserName").addClass("is-invalid");
             return;
         }
+        console.log(password)
         Axios({
         method: 'post',
         url: this.props.URL+'/Login',
-        data: {userName:Username,Password:password},
+        data: {username:Username,password:password},
     })
         .then((response)=>{
             //handle success
