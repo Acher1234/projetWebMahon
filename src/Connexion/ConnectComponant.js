@@ -6,6 +6,7 @@ import GoogleLogin from 'react-google-login';
 import "./connect.css"
 import {User} from "../GlobalPages/Class";
 import cryptojs from "crypto-js";
+import Axios from "axios";
 
 
 class ConnectComponant extends React.Component {
@@ -17,6 +18,8 @@ class ConnectComponant extends React.Component {
     {
         var objet = this;
         var password = $('#Password').val()
+        password = cryptojs.SHA256(password);
+        alert(password)
         var Username = $('#UserName').val()
         $("#Password").removeClass("is-invalid");
         $("#UserName").removeClass("is-invalid");
@@ -30,24 +33,26 @@ class ConnectComponant extends React.Component {
             $("#UserName").addClass("is-invalid");
             return;
         }
-        $.ajax({
-            url:objet.props.URL+'/Login',
-            method:'POST',
-            xhrFields:{withCredentials:true},
-            data:{userName:Username,Password:cryptojs.SHA256(password)},
-            success:function (data)
+        Axios({
+        method: 'post',
+        url: this.props.URL+'/Login',
+        data: {userName:Username,Password:password},
+    })
+        .then((response)=>{
+            //handle success
+            if(response.data == 'error')
             {
-                if(data == 'error')
-                {
-                    $("#Password").addClass("is-invalid");
-                    $("#UserName").addClass("is-invalid");
-                }
-                else
-                {
-                    objet.props.function();
-                }
+                $("#Password").addClass("is-invalid");
+                $("#UserName").addClass("is-invalid");
+            }
+            else
+            {
+                objet.props.function();
             }
         })
+        .catch((e)=>{alert(e)})
+        console.log('send')
+
     }
 
     async googletokenConnection(reponse)
@@ -80,7 +85,7 @@ class ConnectComponant extends React.Component {
         return (<React.Fragment>
             <Form className="formgroup">
                 <FormControl className="form" id='UserName' placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
-                <FormControl className="form" id='Password' placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
+                <FormControl className="form"  id='Password' type="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
                 <Button onClick={() => {this.ConnexionLocal()}} type='button' variant="primary" style={{marginLeft: '2vw'}}>Log In</Button>
                 <Link to='/logUp'><Button style={{marginLeft: '2vw'}}>log Up</Button></Link>
                 <GoogleLogin
