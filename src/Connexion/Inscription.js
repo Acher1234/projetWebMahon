@@ -94,9 +94,9 @@ class Inscription extends React.Component
                     We'll never share your email with anyone else.
                 </Form.Text>
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" onChange={(event)=>{this.setState({lastName : event.target.value});}} value={this.state.lastName} placeholder="Enter Lastname" />
-                <Form.Label>Last Name</Form.Label>
                 <Form.Control type="text"  value={this.state.name} onChange={(event)=>{this.setState({name : event.target.value});}} placeholder="Enter Name" />
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control type="text" onChange={(event)=>{this.setState({lastName : event.target.value});}} value={this.state.lastName} placeholder="Enter Lastname" />
                 <Form.Label>Username</Form.Label>
                 <Form.Control style={this.state.style} type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});this.verifyUsername(event.target.value);}} placeholder="Enter Name" />
                 <Form.Label>your picture</Form.Label>
