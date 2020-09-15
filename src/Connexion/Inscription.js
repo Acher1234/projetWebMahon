@@ -5,6 +5,7 @@ import LocationSearchInput from './LocationSearchInput'
 import Axios from 'axios'
 import formData from 'form-data'
 import { ready } from "jquery";
+import cryptojs from "crypto-js";
 
 
 class Inscription extends React.Component
@@ -39,7 +40,7 @@ class Inscription extends React.Component
         Form.set('email',this.state.email)
         Form.set('name',this.state.name)
         Form.set('lastName',this.state.lastName)
-        Form.set('password',this.state.password)
+        Form.set('password',cryptojs.SHA256(this.state.password))
         Form.set('userName',this.state.userName)
         Form.set('address',this.state.adress)
         Form.set('pic',this.state.file)
@@ -99,8 +100,9 @@ class Inscription extends React.Component
                 <Form.Label>Username</Form.Label>
                 <Form.Control style={this.state.style} type="text" value={this.state.userName} onChange={(event)=>{this.setState({userName : event.target.value});this.verifyUsername(event.target.value);}} placeholder="Enter Name" />
                 <Form.Label>your picture</Form.Label>
-                <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
                 <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
+                <Form.Label>your address</Form.Label>
+                <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>
