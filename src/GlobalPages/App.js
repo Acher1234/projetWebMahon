@@ -56,8 +56,6 @@ class App extends React.Component
       }
   }
 
-
-
   render() {
         if(!this.state.Waiting)
         {
@@ -75,7 +73,7 @@ class App extends React.Component
                         <Inscription URL={url}/>
                     </Route>
                     <Route path="/userProfile" exact>
-                        {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/"/> }
+                        {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/userProfile"/> }
                     </Route>
                 </Switch>
            </Router>
