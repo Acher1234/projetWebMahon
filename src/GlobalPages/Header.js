@@ -3,11 +3,18 @@ import {Switch,BrowserRouter as Router,Link,Redirect,withRouter} from 'react-rou
 import {Navbar,Nav,NavDropdown} from 'react-bootstrap'
 import $ from 'jquery'
 import App from "./App";
+import Axios from "axios";
 
 class Header extends React.Component
 {
     constructor(props) {
         super(props);
+    }
+
+    disconnectFunction()
+    {
+        Axios.post(this.props.URL + "/disconnect",{},{withCredentials:true});
+        this.props.disconnectFunction();
     }
 
     render()
@@ -26,6 +33,7 @@ class Header extends React.Component
                         </NavDropdown.Item>
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/LogUp">log up</Link></NavDropdown.Item>}
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/Connect">Connect</Link></NavDropdown.Item>}
+                        {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'  onClick={this.disconnectFunction.bind(this)} to="/">disconnection</Link></NavDropdown.Item>  :  ""}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

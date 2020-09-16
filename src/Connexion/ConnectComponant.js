@@ -1,5 +1,6 @@
 import {Button, Form, FormControl, InputGroup} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import  {Link} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import React from "react";
 import $ from "jquery";
 import GoogleLogin from 'react-google-login';
@@ -12,6 +13,7 @@ import Axios from "axios";
 class ConnectComponant extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {redirect:false}
     }
 
     ConnexionLocal()
@@ -44,8 +46,7 @@ class ConnectComponant extends React.Component {
             else
             {
                 this.props.function()
-                window.location.href = '/'
-
+                this.setState({redirect:true})
             }
         })
         .catch((e)=>{alert(e)})
@@ -69,6 +70,10 @@ class ConnectComponant extends React.Component {
 
     render()
     {
+        if(this.state.redirect)
+        {
+            return <Redirect to="/"/>
+        }
         return (<React.Fragment>
             <Form className="formgroup">
                 <FormControl className="form" id='UserName' placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>

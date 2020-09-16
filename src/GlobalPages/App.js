@@ -7,6 +7,7 @@ import {Button} from 'react-bootstrap'
 import $ from "jquery";
 import ConnectComponant from '../Connexion/ConnectComponant'
 import Inscription from "../Connexion/Inscription";
+import Axios from "axios";
 
 
 var url = 'http://localhost:8080';
@@ -15,55 +16,39 @@ class App extends React.Component
 {
   constructor(props) {
     super(props);
-    this.state = {Connection:false,user:null}
-  }
-  functionchangeuser()
-  {
-      var objet = this;
-      $.ajax(
-          {
-              url:url+'/recupUser',
-              data:{},
-              xhrFields:{withCredentials:true},
-              method:'GET',
-              success:function (data)
-              {
-                  if(data != null) {
-                      alert("connected")
-                      objet.setState({
-                          Connection: true,
-                          user: new User(data.email, data.nom, data.prenom, data.username, data.adress)
-                      })
-                  }
-              }
-          })
-  }
+    }
 
-  async componentWillMount()
+    state = {Connection:false,user:null}
+
+
+  disconnect()
   {
       this.setState({Connection:false,user:null})
-      var objet = this;
-      alert('test')
-      $.ajax(
-          {
-              url:url+'/isConnected',
-              data:{},
-              xhrFields:{withCredentials:true},
-              method:'GET',
-              success:function (data) {
-                  if(data.isConnected)
-                  {
-                      objet.functionchangeuser()
-                  }
-              }
-          })
-
   }
+
+  functionchangeuser()
+  {
+      alert ('called')
+      Axios.get(url+'/recupUser',{withCredentials:true})
+          .then((data)=>{
+              if(data.data != null) {
+              this.setState({
+                  Connection: true,
+                  user: new User(data.data.email, data.data.nom, data.data.prenom, data.data.username, data.data.adress)
+              })
+              }
+              else
+              {
+                  alert("not connected")
+              }})
+          .catch(()=>{alert('error')})
+  }
+
 
     render() {
     return(
            <Router>
-             <Header Connexion={this.state.Connection} URL={url}/>
+             <Header disconnectFunction={this.disconnect.bind(this)} Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
                     </Route>
