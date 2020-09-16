@@ -5,7 +5,6 @@ import React from "react";
 import $ from "jquery";
 import GoogleLogin from 'react-google-login';
 import "./connect.css"
-import {User} from "../GlobalPages/Class";
 import cryptojs from "crypto-js";
 import Axios from "axios";
 
@@ -65,6 +64,7 @@ class ConnectComponant extends React.Component {
             }
         })
         this.props.function()
+        this.setState({redirect:true})
     }
 
 

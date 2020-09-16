@@ -21,20 +21,18 @@ class Header extends React.Component
     {
         return(<div>
             <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand href="#home">Location</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                         <NavDropdown.Item>
                             <Link className='linkDropdown'  to="/">Home</Link>
                         </NavDropdown.Item>
-                        <NavDropdown.Item>
-                            <Link className='linkDropdown' to="/test">test</Link>
-                        </NavDropdown.Item>
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/LogUp">log up</Link></NavDropdown.Item>}
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/Connect">Connect</Link></NavDropdown.Item>}
                         {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'  onClick={this.disconnectFunction.bind(this)} to="/">disconnection</Link></NavDropdown.Item>  :  ""}
-                    </Nav>
+                        {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'   to="/userProfile">your Profil</Link></NavDropdown.Item>  :  ""}
+                        </Nav>
                 </Navbar.Collapse>
             </Navbar>
         </div>
