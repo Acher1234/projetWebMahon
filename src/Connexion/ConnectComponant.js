@@ -51,14 +51,14 @@ class ConnectComponant extends React.Component {
         .catch((e)=>{alert(e)})
     }
 
-    async googletokenConnection(reponse)
+    async googletokenConnection(response)
     {
         var objet = this;
         await $.ajax({
             url: objet.props.URL+'/google/auth/token',
             method:'GET',
             xhrFields:{withCredentials:true},
-            data:{access_token:reponse.tokenId},
+            data:{access_token:response.tokenId},
             success:function (data)
             {
             }
@@ -72,14 +72,14 @@ class ConnectComponant extends React.Component {
     {
         if(this.state.redirect)
         {
-            return <Redirect to="/"/>
+            return <Redirect to="/userProfile"/>
         }
         return (<React.Fragment>
             <Form className="formgroup">
                 <FormControl className="form" id='UserName' placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
                 <FormControl className="form"  id='Password' type="password" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"/>
                 <Button onClick={() => {this.ConnexionLocal()}} type='button' variant="primary" style={{marginLeft: '2vw'}}>Log In</Button>
-                <Link to='/logUp'><Button style={{marginLeft: '2vw'}}>log Up</Button></Link>
+                <Link to='/logUp'><Button  style={{marginRight: '1vw',marginLeft: '1vw'}}>Sign Up</Button></Link>
                 <GoogleLogin
                     clientId="829121400520-g6jc9th3bd6il8opdcfqgqgu10n3ed0f.apps.googleusercontent.com"
                     buttonText="Login"
