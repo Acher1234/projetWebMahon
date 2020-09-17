@@ -46,6 +46,7 @@ class App extends React.Component
     }
 
   async functionchangeuser() {
+          alert("test")
       var data = await Axios.get(url + '/recupUser', {withCredentials: true})
       if (data.data != null) {
           this.setState({
@@ -75,7 +76,7 @@ class App extends React.Component
                         <Inscription function={this.functionchangeuser.bind(this)} URL={url}/>
                     </Route>
                     <Route path="/userProfile" exact>
-                        {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/"/> }
+                        {this.state.Connection ? <UserProfil URL={url} changeUser={this.functionchangeuser.bind(this)} user={this.state.user} /> : <Redirect to="/"/> }
                     </Route>
                 </Switch>
            </Router>
