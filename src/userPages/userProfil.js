@@ -28,10 +28,11 @@ class UserProfil extends React.Component {
 
     render()
     {
+        var imagePath = this.props.user.flagImage ? this.props.URL + this.props.user.imagePath : this.props.user.urlImagePath;
         return (<div>
             <Row>
                 <Col xs={6} md={4}>
-                    <Image  style={{height:"171px",width:"180px"}} src={this.props.URL + this.props.user.imagePath} roundedCircle />
+                    <Image  style={{height:"171px",width:"180px"}} src={imagePath} roundedCircle />
                 </Col>
                 <Col>
                     <Row style={{marginBottom:"0.9vh"}}>
