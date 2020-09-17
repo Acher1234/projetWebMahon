@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import {BrowserRouter as Router} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import LocationSearchInput from './LocationSearchInput'
 import Axios from 'axios'
 import formData from 'form-data'
@@ -16,7 +17,7 @@ class Inscription extends React.Component
         
     }
 
-    state = {adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:"",style:{}};
+    state = {redirect:false,adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:"",style:{}};
 
     verify()
     {
@@ -52,7 +53,9 @@ class Inscription extends React.Component
             .then((response)=>{
                 //handle success
                 if(response.data == "perfect")
-                {window.location.href = "http://localhost:3000"}
+                {
+                        this.setState({redirect:true})
+                }
             })
             .catch((e)=>{alert(e)})
         console.log('send')
@@ -85,8 +88,7 @@ class Inscription extends React.Component
 
     render()
     {
-        
-        return (<Form>
+        return this.state.redirect ? <Redirect to="/Connect" />:(<Form>
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email"  value={this.state.email} onChange={(event)=>{this.setState({email : event.target.value});}} placeholder="Enter email" />

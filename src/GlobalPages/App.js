@@ -3,7 +3,6 @@ import {Switch,BrowserRouter as Router,Link,Route} from 'react-router-dom'
 import {Redirect} from 'react-router-dom'
 import './App.css';
 import Header from "./Header";
-import {User} from './Class'
 import {Button} from 'react-bootstrap'
 import $ from "jquery";
 import UserProfil from "../userPages/userProfil";
@@ -27,10 +26,10 @@ class App extends React.Component
         {
              await this.testConection()
         }
-        this.setState({Waiting:true})
+        this.setState({Waiting:false})
     }
 
-    state = {Waiting:false,Connection:false,user:null}
+    state = {Waiting:true,Connection:false,user:null}
 
     async testConection()
     {
@@ -51,15 +50,16 @@ class App extends React.Component
       if (data.data != null) {
           this.setState({
               Connection: true,
-              user: new User(data.data.email, data.data.nom, data.data.prenom, data.data.username, data.data.adress)
+              user: data.data
           })
       }
   }
 
 
 
+
   render() {
-        if(!this.state.Waiting)
+        if(this.state.Waiting)
         {
             return <p>Loading</p>
         }
@@ -72,7 +72,7 @@ class App extends React.Component
                             <ConnectComponant URL={url} function={this.functionchangeuser.bind(this)}></ConnectComponant>
                     </Route>
                     <Route path="/LogUp" exact>
-                        <Inscription URL={url}/>
+                        <Inscription function={this.functionchangeuser.bind(this)} URL={url}/>
                     </Route>
                     <Route path="/userProfile" exact>
                         {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/"/> }
