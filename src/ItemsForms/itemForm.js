@@ -24,6 +24,7 @@ class ItemForm extends React.Component {
             categorieForm:"",
             subCategorieForm:""
         };
+        this.recupListOfCategorie();
     }
 
     sendData()
@@ -61,6 +62,7 @@ class ItemForm extends React.Component {
     {
         await Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
         this.setState({showCat:false})
+        this.recupListOfCategorie();
     }
 
     ChangeStateAdress(newadress,readyTemp)
@@ -97,7 +99,6 @@ class ItemForm extends React.Component {
                 event.stopPropagation();
             }
         };
-        this.recupListOfCategorie();
         return (
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
@@ -117,9 +118,6 @@ class ItemForm extends React.Component {
                             </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
-
-
-
                 <Form.Row>
                     <Form.Group as={Col} md={2} controlId="formGridState">
                         <Form.Label>Category</Form.Label>
