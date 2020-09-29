@@ -1,7 +1,7 @@
 import {Button, Form, FormControl, InputGroup,Card} from "react-bootstrap";
 import  {Link} from "react-router-dom";
 import {Redirect} from "react-router-dom";
-import {trash} from "react-bootstrap-icons"
+import {Trash} from "react-bootstrap-icons"
 
 import React from "react";
 import Axios from "axios";
@@ -29,11 +29,15 @@ export default class AdminPages extends React.Component {
 
     }
 
-    async afficheData(iod)
+    async afficheData(id)
     {
-
+        alert(id)
     }
     async makeItAdmin(id)
+    {
+        alert(id)
+    }
+    async remove(id)
     {
 
     }
@@ -43,18 +47,33 @@ export default class AdminPages extends React.Component {
             <>
                 {this.state.listOfpersonal.map((value,index)=>
                 {
-                    return <Card style={{ width: '18rem',display:"inline-block"}}>
+                    return value.adminNumber == 0 ?
+                    <Card style={{ width: '18rem',display:"inline-block"}}>
                         <Card.Body>
-                            <Card.Title>{value.nom}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Title>{value.email}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">{value.nom}</Card.Subtitle>
                             <Card.Text>
                                 {value.prenom}
                             </Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                            <Button type="primary" onClick={this.afficheData(value._id)} />
-                            <Button type="primary" onClick={this.makeItAdmin(value._id)} />
-                            <Button><thrash/></Button>
+                            <Button type="primary" onClick={()=>this.afficheData(value._id)} > affichage</Button>
+                            <Button type="primary" onClick={()=>this.makeItAdmin(value._id)} > Admin</Button>
+                            <Button><Trash/></Button>
+                        </Card.Footer>
+                    </Card>
+                        :
+                    <Card style={{ width: '18rem',display:"inline-block",color:"red"}}>
+                        <Card.Body>
+                            <Card.Title>{value.email}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">{value.nom}</Card.Subtitle>
+                            <Card.Text>
+                                {value.prenom}
+                            </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                            <Button type="primary" onClick={()=>this.afficheData(value._id)} > affichage</Button>
+                            <Button onClick={()=>this.remove(value._id)}><Trash/></Button>
                         </Card.Footer>
                     </Card>
                 })}

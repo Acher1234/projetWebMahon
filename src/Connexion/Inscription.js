@@ -104,7 +104,7 @@ class Inscription extends React.Component
                 <Form.Label>your picture</Form.Label>
                 <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
                 <Form.Label>your address</Form.Label>
-                <LocationSearchInput function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
+                <LocationSearchInput style={{}} function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"  onChange={(event)=>{this.setState({password : event.target.value});}} value={this.state.password} placeholder="Password" />
             </Form.Group>

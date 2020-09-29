@@ -20,6 +20,7 @@
     "react-google-places-autocomplete": "^2.3.2",
     "react-load-script": "0.0.6",
     "react-native": "^0.63.2",
+    "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3"
   },
