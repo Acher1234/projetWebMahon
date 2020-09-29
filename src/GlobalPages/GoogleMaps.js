@@ -7,15 +7,26 @@ class GoogleMaps extends React.Component
 {
     constructor(props) {
         super(props);
-        this.state = {Loading:false,latitude:0,longitude:0}
+        this.state = {Loading:true,latitude:0,longitude:0,categorie:null}
+        //this.recupCategorie();
         this.recupCoord()
     }
 
     async recupCoord()
     {
         var data = await Axios.get(this.props.URL+"/getCoord",{withCredentials:true})
-        this.setState({})
+        this.setState({latitude:data.data.latitude,longitude:data.data.longitude})
+        this.setState({Loading:false})
+       // this.getObject()
     }
+
+    async getObject()
+    {
+        var Marker = await Axios.post(this.props.URL+"/getObjectFromCoordinate",{latitude:this.state.latitude,longitude:this.state.longitude},{withCredentials:true})
+
+
+    }
+
     render()
     {
         return this.state.Loading ? <p>...Load</p> :
@@ -25,9 +36,10 @@ class GoogleMaps extends React.Component
             lng: this.state.longitude
         }}
         style={{width:"100vw",height:"100vh"}}
-        Zoom={15}
         >
+        <Marker>
 
+        </Marker>
         </Map>
     }
 
