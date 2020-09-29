@@ -34,7 +34,7 @@ class GoogleMaps extends React.Component
             lat: this.state.latitude,
             lng: this.state.longitude
         }}
-        style={{width:"100vw",height:"100vh"}}
+        style={{width:"98vw",height:"90vh"}}
         >
         <Marker>
 
