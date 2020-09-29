@@ -10,6 +10,7 @@ import ItemForm from "../ItemsForms/itemForm";
 import ConnectComponant from '../Connexion/ConnectComponant'
 import Inscription from "../Connexion/Inscription";
 import Axios from "axios";
+import AdminPages from "../AdminComponants/AdminPages";
 
 
 var url = 'http://localhost:8080';
@@ -63,7 +64,7 @@ class App extends React.Component
             return <p>Loading</p>
         }
         return(<Router>
-             <Header disconnectFunction={this.disconnect.bind(this)} Connexion={this.state.Connection} URL={url}/>
+             <Header disconnectFunction={this.disconnect.bind(this)} user={this.state.user} Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
                     </Route>
@@ -74,7 +75,10 @@ class App extends React.Component
                         <Inscription function={this.functionchangeuser.bind(this)} URL={url}/>
                     </Route>
                     <Route path="/userProfile" exact>
-                        {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/"/> }
+                        {this.state.Connection ? <UserProfil URL={url} changeUser={this.functionchangeuser.bind(this)} user={this.state.user} /> : <Redirect to="/"/> }
+                    </Route>
+                    <Route path="/AdminPart" exact>
+                        <AdminPages URL={url}  />
                     </Route>
                     <Route path="/addItems" exact>
                         {this.state.Connection ? <ItemForm URL={url} user={this.state.user} /> : <Redirect to="/"/> }

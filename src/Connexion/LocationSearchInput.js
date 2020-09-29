@@ -15,7 +15,7 @@ class LocationSearchInput extends React.Component {
 
     render() {
         return (<React.Fragment>
-            <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK3voBTqcjwJcxgE16blYzeYFGmNuXLk8&libraries=places"  onS  onError={()=>{alert('error')}} onLoad={()=>{this.setState({ready:1})}} />
+            <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK3voBTqcjwJcxgE16blYzeYFGmNuXLk8&libraries=places"    onError={()=>{alert('error')}} onLoad={()=>{this.setState({ready:1})}} />
             {this.state.ready == 0 ? "" :     <GooglePlacesAutocomplete
                 onSelect={(description)=>{this.setState({style:{border:'solid 0.3px green'},address:description.description,ready:1});this.props.function(description.description,1)}}
                 inputStyle = {this.state.style}
