@@ -88,7 +88,7 @@ class ItemForm extends React.Component {
     async recupListOfCategorie()
     {
        var x = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
-       this.setState({categorieList : x.data?.tabOfCat})
+       this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
     }
 
     render() {
@@ -121,7 +121,7 @@ class ItemForm extends React.Component {
                 <Form.Row>
                     <Form.Group as={Col} md={2} controlId="formGridState">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select"  defaultValue="i.e: Computer">
+                        <Form.Control as="select" onChange={(e)=>{this.setState({categorie:e.target.value})}}  defaultValue="i.e: Computer">
                             {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
                         </Form.Control>
                         <Button onClick={() => this.handleClickCat()} variant="dark"> + Add a new Category </Button>
