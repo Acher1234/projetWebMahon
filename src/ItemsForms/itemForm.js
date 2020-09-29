@@ -85,7 +85,7 @@ class ItemForm extends React.Component {
 
     async recupListOfCategorie()
     {
-        await Recup
+        //await Axios.get(this.props.'')
     }
 
 
@@ -98,7 +98,7 @@ class ItemForm extends React.Component {
                 event.stopPropagation();
             }
         };
-        recupListOfCategorie();
+        this.recupListOfCategorie();
         return (
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
@@ -125,7 +125,7 @@ class ItemForm extends React.Component {
                     <Form.Group as={Col} md={2} controlId="formGridState">
                         <Form.Label>Category</Form.Label>
                         <Form.Control as="select"  defaultValue="i.e: Computer">
-                            {this.state.categorieList.map(value=>{return <option>{value}</option>})}
+                            {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
                         </Form.Control>
                         <Button onClick={() => this.handleClickCat()} variant="dark"> + Add a new Category </Button>
                     </Form.Group>
