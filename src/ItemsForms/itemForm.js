@@ -54,6 +54,11 @@ class ItemForm extends React.Component {
             .catch((e)=>{alert(e)})
         console.log('send')
     }
+    sendCatData()
+    {
+        Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
+    }
+
     ChangeStateAdress(newadress,readyTemp)
     {
         this.setState({address:newadress,ready:readyTemp})
@@ -182,14 +187,7 @@ class ItemForm extends React.Component {
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group  md="2">
-                            <Form.Label>Picture of the Category</Form.Label>
-                            <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
-                            <Form.Control.Feedback type="invalid">
-                                Please upload a picture of your category.
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <Button onClick={() => console.log("cava ou quoi?")} type="submit">Add a new Category</Button>
+                        <Button onClick={() => this.sendCatData()} type="submit">Add a new Category</Button>
                     </Modal.Body>
                 </Modal>
                 <Modal show={this.state.showSub} onHide={this.onHide.bind(this)}>
@@ -206,13 +204,6 @@ class ItemForm extends React.Component {
                                 onChange={(event)=>{this.setState({subCategorieForm : event.target.value});}}
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group  md="2">
-                            <Form.Label>Picture of the Category</Form.Label>
-                            <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
-                            <Form.Control.Feedback type="invalid">
-                                Please upload a picture of your category.
-                            </Form.Control.Feedback>
                         </Form.Group>
                         <Button onClick={() => console.log("cava ou quoi?")} type="submit">Add a new Sub-Category</Button>
                     </Modal.Body>
