@@ -2,16 +2,27 @@ import {Row,Col,Image,Form,Button,Modal} from "react-bootstrap"
 import React from "react";
 import Axios from "axios";
 import cryptojs from "crypto-js";
+import LocationSearchInput from "../Connexion/LocationSearchInput";
+import UserProfil from "../userPages/userProfil";
 
 class ItemForm extends React.Component {
 
     constructor(props) {
         super(props);
+        this.fullname = this.props.user.nom + " " + this.props.user.prenom;
+        this.state = {
+            fullUser: this.fullname,
+            itemName:"",
+            address : this.props.user.address,
+            categorie: "",
+            subCat:"",
+            pricePerDay:"",
+            showCat:false,
+            showSub:false,
+            categorieForm:"",
+            subCategorieForm:""
+        };
     }
-    fullname = this.props.user.nom + " " + this.props.user.prenom;
-
-    state = {fullUser: this.fullname,itemName:"", address : this.props.user.address, categorie: "", subCat:"",pricePerDay:""};
-
 
     sendData()
     {
@@ -43,6 +54,22 @@ class ItemForm extends React.Component {
             .catch((e)=>{alert(e)})
         console.log('send')
     }
+    ChangeStateAdress(newadress,readyTemp)
+    {
+        this.setState({address:newadress,ready:readyTemp})
+    }
+    handleClickCat()
+    {
+        this.setState({showCat:true})
+    }
+    handleClickSub()
+    {
+        this.setState({showSub:true})
+    }
+    async onHide()
+    {
+        this.setState({showCat:false,showSub:false})
+    }
 
     render() {
         const handleSubmit = (event) => {
@@ -56,16 +83,6 @@ class ItemForm extends React.Component {
         return (
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
-                    <Form.Group as={Col} md="2">
-                        <Form.Label>Your item</Form.Label>
-                        <Form.Control
-                            required
-                            type="text"
-                            placeholder="i.e: My iPhone XS"
-                            onChange={(event)=>{this.setState({itemName : event.target.value});}}
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
                     <Form.Group as={Col} md="2">
                         <Form.Label>Username</Form.Label>
                             <Form.Control
@@ -81,8 +98,48 @@ class ItemForm extends React.Component {
                                 Please choose a username.
                             </Form.Control.Feedback>
                     </Form.Group>
+                </Form.Row>
+                <Form.Row>
                     <Form.Group as={Col} md="2">
-                        <Form.Label>your picture</Form.Label>
+                        <Form.Label>Category</Form.Label>
+                        <Form.Control
+                            required
+                            type="text"
+                            placeholder="i.e: Computer"
+                            onChange={(event)=>{this.setState({categorie : event.target.value});}}
+                        />
+                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        <Button onClick={() => this.handleClickCat()} variant="dark"> + Add a new Category </Button>
+                    </Form.Group>
+                    <Form.Group as={Col} md="2">
+                        <Form.Label>Sub-Category</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="i.e: Gaming Computer"
+                            aria-describedby="inputGroupPrepend"
+                            onChange={(event)=>{this.setState({subCat : event.target.value});}}
+                            required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Please choose a username.
+                        </Form.Control.Feedback>
+                        <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>{' '}
+                    </Form.Group>
+
+                </Form.Row>
+                <Form.Row>
+                    <Form.Group as={Col} md="2">
+                        <Form.Label>Your item</Form.Label>
+                        <Form.Control
+                            required
+                            type="text"
+                            placeholder="i.e: My iPhone XS"
+                            onChange={(event)=>{this.setState({itemName : event.target.value});}}
+                        />
+                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="2">
+                        <Form.Label>Picture of the Item</Form.Label>
                         <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
                         <Form.Control.Feedback type="invalid">
                             Please upload a picture of your item.
@@ -91,12 +148,8 @@ class ItemForm extends React.Component {
                 </Form.Row>
                 <Form.Row>
                     <Form.Group as={Col} md="3">
-                        <Form.Label>City</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Please provide an adress."
-                            value={this.state.address}
-                            required />
+                        <Form.Label>Address</Form.Label>
+                        <LocationSearchInput style={{}} address={this.state.address}  function={this.ChangeStateAdress.bind(this)}></LocationSearchInput>
                         <Form.Control.Feedback type="invalid">
                             Please provide a valid address.
                         </Form.Control.Feedback>
@@ -113,32 +166,57 @@ class ItemForm extends React.Component {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col} md="2">
-                        <Form.Label>Category</Form.Label>
-                        <Form.Control
-                            required
-                            type="text"
-                            placeholder="i.e: Computer"
-                            onChange={(event)=>{this.setState({categorie : event.target.value});}}
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group as={Col} md="2">
-                        <Form.Label>Sub-Category</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="i.e: Gaming Computer"
-                            aria-describedby="inputGroupPrepend"
-                            onChange={(event)=>{this.setState({subCat : event.target.value});}}
-                            required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Please choose a username.
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Form.Row>
                 <Button type="submit">Add your Item</Button>
+                <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add a new Category</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form.Group md="2">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                required
+                                type="text"
+                                placeholder="i.e: Computer"
+                                onChange={(event)=>{this.setState({categorieForm : event.target.value});}}
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group  md="2">
+                            <Form.Label>Picture of the Category</Form.Label>
+                            <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
+                            <Form.Control.Feedback type="invalid">
+                                Please upload a picture of your category.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button onClick={() => console.log("cava ou quoi?")} type="submit">Add a new Category</Button>
+                    </Modal.Body>
+                </Modal>
+                <Modal show={this.state.showSub} onHide={this.onHide.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add a new Sub-Category</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form.Group md="2">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                required
+                                type="text"
+                                placeholder="i.e: Gaming Computer"
+                                onChange={(event)=>{this.setState({subCategorieForm : event.target.value});}}
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group  md="2">
+                            <Form.Label>Picture of the Category</Form.Label>
+                            <Form.Control type="file"   onChange={(event)=>{this.setState({file:event.target.files[0]})}}/>
+                            <Form.Control.Feedback type="invalid">
+                                Please upload a picture of your category.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button onClick={() => console.log("cava ou quoi?")} type="submit">Add a new Sub-Category</Button>
+                    </Modal.Body>
+                </Modal>
             </Form>
         );
     }
