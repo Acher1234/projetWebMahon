@@ -6,7 +6,7 @@ import {Form} from "react-bootstrap";
 class LocationSearchInput extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { address: '',ready:0,style:{border:'solid 0.1px black'}};
+        this.state = { address: this.props.address,ready:0,style:{border:'solid 0.1px black'}};
     }
 
     handleChange = address => {
