@@ -6,6 +6,7 @@ import Header from "./Header";
 import {Button} from 'react-bootstrap'
 import $ from "jquery";
 import UserProfil from "../userPages/userProfil";
+import ItemForm from "../ItemsForms/itemForm";
 import ConnectComponant from '../Connexion/ConnectComponant'
 import Inscription from "../Connexion/Inscription";
 import Axios from "axios";
@@ -56,8 +57,6 @@ class App extends React.Component
   }
 
 
-
-
   render() {
         if(this.state.Waiting)
         {
@@ -76,6 +75,9 @@ class App extends React.Component
                     </Route>
                     <Route path="/userProfile" exact>
                         {this.state.Connection ? <UserProfil URL={url} user={this.state.user} /> : <Redirect to="/"/> }
+                    </Route>
+                    <Route path="/addItems" exact>
+                        {this.state.Connection ? <ItemForm URL={url} user={this.state.user} /> : <Redirect to="/"/> }
                     </Route>
                 </Switch>
            </Router>
