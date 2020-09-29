@@ -11,7 +11,7 @@ import ConnectComponant from '../Connexion/ConnectComponant'
 import Inscription from "../Connexion/Inscription";
 import Axios from "axios";
 import AdminPages from "../AdminComponants/AdminPages";
-
+import GoogleMaps from "./GoogleMaps"
 
 var url = 'http://localhost:8080';
 
@@ -67,6 +67,7 @@ class App extends React.Component
              <Header disconnectFunction={this.disconnect.bind(this)} user={this.state.user} Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
+                        <GoogleMaps URL={url}/>
                     </Route>
                     <Route path="/Connect" exact>
                             <ConnectComponant URL={url} function={this.functionchangeuser.bind(this)}></ConnectComponant>
