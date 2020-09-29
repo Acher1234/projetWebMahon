@@ -35,11 +35,15 @@ export default class AdminPages extends React.Component {
     }
     async makeItAdmin(id)
     {
-        alert(id)
+        var response = await Axios.post(this.props.URL + "/adminUser",{id:id},{withCredentials:true})
+        alert(response.data)
+        this.userRecup()
     }
     async remove(id)
     {
-
+        var response = await Axios.post(this.props.URL + "/removeUser",{id:id},{withCredentials:true})
+        alert(response.data)
+        this.userRecup()
     }
     render()
     {
@@ -59,7 +63,7 @@ export default class AdminPages extends React.Component {
                         <Card.Footer>
                             <Button type="primary" onClick={()=>this.afficheData(value._id)} > affichage</Button>
                             <Button type="primary" onClick={()=>this.makeItAdmin(value._id)} > Admin</Button>
-                            <Button><Trash/></Button>
+                            <Button onClick={()=>this.remove(value._id)}><Trash/></Button>
                         </Card.Footer>
                     </Card>
                         :
