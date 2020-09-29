@@ -85,10 +85,9 @@ class ItemForm extends React.Component {
 
     async recupListOfCategorie()
     {
-        //await Axios.get(this.props.'')
+       var x = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
+       this.setState({categorieList : x.data?.tabOfCat})
     }
-
-
 
     render() {
         const handleSubmit = (event) => {
@@ -144,7 +143,6 @@ class ItemForm extends React.Component {
                         <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>{' '}
                     </Form.Group>
                 </Form.Row>
-
 
 
                 <Form.Row>
