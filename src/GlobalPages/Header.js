@@ -30,10 +30,10 @@ class Header extends React.Component
                         </NavDropdown.Item>
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/LogUp">Sign Up</Link></NavDropdown.Item>}
                         {this.props.Connexion ? ""  :  <NavDropdown.Item><Link className='linkDropdown'  to="/Connect">Connection</Link></NavDropdown.Item>}
-                        {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'  onClick={this.disconnectFunction.bind(this)} to="/">Disconnection</Link></NavDropdown.Item>  :  ""}
                         {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'   to="/userProfile">Your Profil</Link></NavDropdown.Item>  :  ""}
                         {(this.props.Connexion && this.props.user.adminNumber == 1) && <NavDropdown.Item><Link className='linkDropdown'   to="/AdminPart">AdminPart</Link></NavDropdown.Item> }
                         {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'   to="/addItems">Add Items</Link></NavDropdown.Item>  :  ""}
+                        {this.props.Connexion ? <NavDropdown.Item><Link className='linkDropdown'  onClick={this.disconnectFunction.bind(this)} to="/">Disconnection</Link></NavDropdown.Item>  :  ""}
                         </Nav>
                 </Navbar.Collapse>
             </Navbar>
