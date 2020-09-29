@@ -24,7 +24,6 @@ class GoogleMaps extends React.Component
     {
         var Marker = await Axios.post(this.props.URL+"/getObjectFromCoordinate",{latitude:this.state.latitude,longitude:this.state.longitude},{withCredentials:true})
 
-
     }
 
     render()

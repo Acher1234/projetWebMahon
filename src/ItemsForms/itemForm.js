@@ -11,6 +11,8 @@ class ItemForm extends React.Component {
         super(props);
         this.fullname = this.props.user.nom + " " + this.props.user.prenom;
         this.state = {
+            categorieList:null,
+            disabledSubCategorie:false,
             fullUser: this.fullname,
             itemName:"",
             address : this.props.user.address,
@@ -54,27 +56,39 @@ class ItemForm extends React.Component {
             .catch((e)=>{alert(e)})
         console.log('send')
     }
-    sendCatData()
+
+    async sendCatData()
     {
-        Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
+        await Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
+        this.setState({showCat:false})
     }
 
     ChangeStateAdress(newadress,readyTemp)
     {
         this.setState({address:newadress,ready:readyTemp})
     }
+
     handleClickCat()
     {
         this.setState({showCat:true})
     }
+
     handleClickSub()
     {
         this.setState({showSub:true})
     }
+
     async onHide()
     {
         this.setState({showCat:false,showSub:false})
     }
+
+    async recupListOfCategorie()
+    {
+        await Recup
+    }
+
+
 
     render() {
         const handleSubmit = (event) => {
@@ -84,7 +98,7 @@ class ItemForm extends React.Component {
                 event.stopPropagation();
             }
         };
-
+        recupListOfCategorie();
         return (
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
@@ -104,16 +118,15 @@ class ItemForm extends React.Component {
                             </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
+
+
+
                 <Form.Row>
-                    <Form.Group as={Col} md="2">
+                    <Form.Group as={Col} md={2} controlId="formGridState">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control
-                            required
-                            type="text"
-                            placeholder="i.e: Computer"
-                            onChange={(event)=>{this.setState({categorie : event.target.value});}}
-                        />
-                        <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        <Form.Control as="select"  defaultValue="i.e: Computer">
+                            {this.state.categorieList.map(value=>{return <option>{value}</option>})}
+                        </Form.Control>
                         <Button onClick={() => this.handleClickCat()} variant="dark"> + Add a new Category </Button>
                     </Form.Group>
                     <Form.Group as={Col} md="2">
@@ -130,8 +143,10 @@ class ItemForm extends React.Component {
                         </Form.Control.Feedback>
                         <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>{' '}
                     </Form.Group>
-
                 </Form.Row>
+
+
+
                 <Form.Row>
                     <Form.Group as={Col} md="2">
                         <Form.Label>Your item</Form.Label>
@@ -151,6 +166,8 @@ class ItemForm extends React.Component {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
+
+
                 <Form.Row>
                     <Form.Group as={Col} md="3">
                         <Form.Label>Address</Form.Label>
@@ -171,7 +188,10 @@ class ItemForm extends React.Component {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
+
                 <Button type="submit">Add your Item</Button>
+
+
                 <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add a new Category</Modal.Title>
@@ -190,6 +210,7 @@ class ItemForm extends React.Component {
                         <Button onClick={() => this.sendCatData()} type="submit">Add a new Category</Button>
                     </Modal.Body>
                 </Modal>
+
                 <Modal show={this.state.showSub} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add a new Sub-Category</Modal.Title>
