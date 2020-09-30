@@ -34,10 +34,6 @@ class ItemForm extends React.Component {
 
     sendData() // a arranger
     {
-        if(!this.verify())
-        {
-            return null;
-        }
         var Form = new FormData();
         Form.set('proprietaireId',this.props.user._id)
         Form.set('categorie',this.state.categorie)
@@ -54,7 +50,8 @@ class ItemForm extends React.Component {
         })
             .then((response)=>{
                 //handle success
-                if(response.data == "perfect")
+                console.log(response, "DFGTHYJ");
+                if(response.data == "success")
                 {
                     this.setState({objSuccess:true})
                 }
@@ -124,16 +121,8 @@ class ItemForm extends React.Component {
     }
 
     render() {
-        const handleSubmit = (event) => {
-            const form = event.currentTarget;
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        };
-
         return (
-            <Form onSubmit={handleSubmit}>
+            <Form >
                 <Alert transition={true} show={this.state.objSuccess} key='success' variant='success'>
                     You added a new Item. You can edit it in "Manage Items".
                 </Alert>
@@ -176,8 +165,6 @@ class ItemForm extends React.Component {
                         <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>
                     </Form.Group>
                 </Form.Row>
-
-
                 <Form.Row>
                     <Form.Group as={Col} md="2">
                         <Form.Label>Your item</Form.Label>
@@ -197,8 +184,6 @@ class ItemForm extends React.Component {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
-
-
                 <Form.Row>
                     <Form.Group as={Col} md="3">
                         <Form.Label>Address</Form.Label>
@@ -220,7 +205,7 @@ class ItemForm extends React.Component {
                     </Form.Group>
                 </Form.Row>
 
-                <Button type="submit">Add your Item</Button>
+                <Button onClick={() => this.sendData()} type="submit">Add your Item</Button>
 
                 <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
