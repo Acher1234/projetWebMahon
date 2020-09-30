@@ -12,7 +12,6 @@ class GoogleMaps extends React.Component
     constructor(props) {
         super(props);
         this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null}
-        //this.recupCategorie();
         this.recupCoord()
     }
     async recupCoord()
@@ -27,7 +26,8 @@ class GoogleMaps extends React.Component
 
     async callNewList()
     {
-
+        var List = Axios.post(this.props.URL + "",{radius:"",lat:this.state.latitude,
+            lon:this.state.longitude,cat:this.state.categorie,subCat:this.state.subCategorie},{})
     }
 
     async getCategorie()
