@@ -1,5 +1,5 @@
 import Slider from '@material-ui/core/Slider';
-import {Col,Row} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import React from "react";
 import {Map, InfoWindow, Marker,Circle, GoogleApiWrapper} from 'google-maps-react';
 import Axios from "axios";
@@ -11,7 +11,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600}
+        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null}
         //this.recupCategorie();
         this.recupCoord()
     }
@@ -21,13 +21,37 @@ class GoogleMaps extends React.Component
         var data = await Axios.get(this.props.URL+"/getCoord",{withCredentials:true})
         this.setState({latitude:data.data.latitude,longitude:data.data.longitude,connected:this.props.connected})
         this.setState({Loading:false})
+        this.getCategorie()
        // this.getObject()
     }
 
+    async callNewList()
+    {
+
+    }
+
+    async getCategorie()
+    {
+        var data = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
+        if(data.data?.tabOfCat?.lenght > 0)
+        {
+            this.setState({categorieList : data.data?.tabOfCat,categorie:data.data?.tabOfCat[0]})
+            this.getSubCategorie(data.data?.tabOfCat[0])
+        }
+    }
+    async getSubCategorie(nameSup)
+    {
+        await this.setState({categorie:nameSup});
+        var data = await Axios.post(this.props.URL + '/recupAllSubCatFromSup',{nameSupCat: this.state.categorie},{withCredentials:true});
+        if(data.data?.tabOfSubCat?.lenght > 0)
+        {
+            this.setState({subCatList : data.data?.tabOfSubCat,subCategorie:data.data?.tabOfSubCat[0]})
+        }
+        this.callNewList()
+    }
     async getObject()
     {
         var Marker = await Axios.post(this.props.URL+"/getObjectFromCoordinate",{latitude:this.state.latitude,longitude:this.state.longitude},{withCredentials:true})
-
     }
 
     render()
@@ -43,11 +67,19 @@ class GoogleMaps extends React.Component
                     defaultValue={600}
                     aria-labelledby="discrete-slider-small-steps"
                     step={100}
-                    onChange={(e,value)=>{this.setState({radius:value})}}
+                    onChange={(e,value)=>{this.setState({radius:value});this.callNewList()}}
                     min={0}
                     max={10000}
                     valueLabelDisplay="auto"
                 />
+                <Form.Label style={{color:"white"}}>Category</Form.Label>
+                <Form.Control as="select" onChange={(e)=>{this.setState({categorie:e.target.value});this.getSubCategorie(e.target.value)}}  defaultValue="i.e: Computer">
+                    {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
+                </Form.Control>
+                <Form.Label style={{color:"white"}}>Sub-Category</Form.Label>
+                <Form.Control as="select" onChange={(e)=>{this.setState({subCat:e.target.value})}}  defaultValue="i.e: Computer">
+                    {this.state.subCatList?.map(value=>{return <option>{value}</option>})}
+                </Form.Control>
                 <div>ObjectChose</div>
             </Col>
                 <Col>
