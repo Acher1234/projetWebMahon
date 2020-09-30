@@ -17,6 +17,7 @@ class GoogleMaps extends React.Component
     }
     async recupCoord()
     {
+
         var data = await Axios.get(this.props.URL+"/getCoord",{withCredentials:true})
         this.setState({latitude:data.data.latitude,longitude:data.data.longitude,connected:this.props.connected})
         this.setState({Loading:false})
