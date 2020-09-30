@@ -106,7 +106,7 @@ class ItemForm extends React.Component {
     async recupListOfCategorie()
     {
        var x = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
-        if(x.data?.tabOfCat?.lenght > 0)
+        if(x.data?.tabOfCat?.length > 0)
         {
             this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
             this.getSubCategorie(x.data?.tabOfCat[0])
@@ -116,7 +116,7 @@ class ItemForm extends React.Component {
     {
         await this.setState({categorie:nameSup});
         var x = await Axios.post(this.props.URL + '/recupAllSubCatFromSup',{nameSupCat: this.state.categorie},{withCredentials:true});
-        if(x.data?.tabOfSubCat?.lenght > 0)
+        if(x.data?.tabOfSubCat?.length > 0)
         {
             this.setState({subCatList : x.data?.tabOfSubCat,subCat:x.data?.tabOfSubCat[0]})
         }
