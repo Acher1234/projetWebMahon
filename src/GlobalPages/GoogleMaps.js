@@ -35,11 +35,9 @@ class GoogleMaps extends React.Component
         var data = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
         if(data.data?.tabOfCat?.length > 0)
         {
-            alert(data.data)
             this.setState({categorieList : data.data?.tabOfCat,categorie:data.data?.tabOfCat[0]})
             this.getSubCategorie(data.data?.tabOfCat[0])
         }
-        console.log(data.data?.tabOfCat?.length)
     }
     async getSubCategorie(nameSup)
     {
