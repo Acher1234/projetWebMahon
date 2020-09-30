@@ -25,7 +25,8 @@ class ItemForm extends React.Component {
             categorieForm:"", // se refere a modal uniquement
             subCategorieForm:"" ,// se refere a modal uniquement
             subSuccess:false,
-            catSuccess:false
+            catSuccess:false,
+            objSuccess:false,
         };
         this.recupListOfCategorie();
         this.recupListOfSubCat();
@@ -38,15 +39,16 @@ class ItemForm extends React.Component {
             return null;
         }
         var Form = new FormData();
-        Form.set('proprietaireId',this.state.user)
+        Form.set('proprietaireId',this.props.user._id)
         Form.set('categorie',this.state.categorie)
         Form.set('subCat',this.state.subCat)
         Form.set('name',this.state.itemName)
-        Form.set('address',this.state.adress)
-        Form.set('pic',this.state.file)
+        Form.set('address',this.state.address)
+        Form.set('valuePerDay',this.state.pricePerDay)
+        Form.set('picture',this.state.file)
         Axios({
             method: 'post',
-            url: this.props.URL + '/createUser',
+            url: this.props.URL + '/createObjet',
             data: Form,
             headers: {'Content-Type': 'multipart/form-data' }
         })
@@ -54,11 +56,10 @@ class ItemForm extends React.Component {
                 //handle success
                 if(response.data == "perfect")
                 {
-                    this.setState({redirect:true})
+                    this.setState({objSuccess:true})
                 }
             })
             .catch((e)=>{alert(e)})
-        console.log('send')
     }
 
     async sendCatData()
@@ -133,6 +134,9 @@ class ItemForm extends React.Component {
 
         return (
             <Form onSubmit={handleSubmit}>
+                <Alert transition={true} show={this.state.objSuccess} key='success' variant='success'>
+                    You added a new Item. You can edit it in "Manage Items".
+                </Alert>
                 <Alert transition={true} show={this.state.catSuccess} key='success' variant='success'>
                     You added a new Categorie.
                 </Alert>
