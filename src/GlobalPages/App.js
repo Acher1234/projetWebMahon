@@ -67,7 +67,7 @@ class App extends React.Component
              <Header disconnectFunction={this.disconnect.bind(this)} user={this.state.user} Connexion={this.state.Connection} URL={url}/>
                 <Switch>
                     <Route path='/' exact>
-                        <GoogleMaps URL={url}/>
+                        <GoogleMaps connected={this.state.Connection} user={this.state.user} URL={url}/>
                     </Route>
                     <Route path="/Connect" exact>
                             <ConnectComponant URL={url} function={this.functionchangeuser.bind(this)}></ConnectComponant>

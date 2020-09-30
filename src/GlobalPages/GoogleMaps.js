@@ -8,17 +8,17 @@ import Axios from "axios";
 
 class GoogleMaps extends React.Component
 {
+    imagePath = null;
     constructor(props) {
         super(props);
         this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600}
         //this.recupCategorie();
         this.recupCoord()
     }
-
     async recupCoord()
     {
         var data = await Axios.get(this.props.URL+"/getCoord",{withCredentials:true})
-        this.setState({latitude:data.data.latitude,longitude:data.data.longitude})
+        this.setState({latitude:data.data.latitude,longitude:data.data.longitude,connected:this.props.connected})
         this.setState({Loading:false})
        // this.getObject()
     }
@@ -31,6 +31,10 @@ class GoogleMaps extends React.Component
 
     render()
     {
+        if(this.state.connected)
+        {
+            this.imagePath = this.props.user?.flagImage ? this.props.URL + this.props.user?.imagePath : this.props.user?.urlImagePath;
+        }
         return this.state.Loading ? <p>...Load</p> :
             <><Row> <Col md={3} style={{backgroundColor:"black",height:"90vh"}}>
                 <h1 style={{color:"white"}}>SlideRange :</h1>
@@ -53,8 +57,20 @@ class GoogleMaps extends React.Component
                         }}
                         style={{width:"98vw",height:"90vh"}}
                     >
-
-
+                            <Marker
+                                position={{
+                                    lat: 0,
+                                    lng: 0
+                                }}>
+                            </Marker>
+                            <Marker
+                                title="You"
+                                icon={this.state.connected ? {url:this.imagePath,scaledSize: new this.props.google.maps.Size(64,64)}:{}}
+                                position={{
+                                    lat: this.state.latitude,
+                                    lng: this.state.longitude
+                                }}>
+                            </Marker>
                         <Circle
                         radius={this.state.radius}
                         center={
