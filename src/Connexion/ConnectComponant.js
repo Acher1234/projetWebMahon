@@ -7,19 +7,23 @@ import GoogleLogin from 'react-google-login';
 import "./connect.css"
 import cryptojs from "crypto-js";
 import Axios from "axios";
+import NodeRSA from "node-rsa";
+import Var from "../Variable";
 
 
 class ConnectComponant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {redirect:false}
+        this.key = NodeRSA()
     }
 
     ConnexionLocal()
     {
         var objet = this;
         var password = $('#Password').val()
-        password = cryptojs.SHA256(password).toString();
+        this.key.importKey(Var.publicKey,Var.encodagepublic)
+        var password =this.key.encrypt(password,"base64")
         var Username = $('#UserName').val()
         $("#Password").removeClass("is-invalid");
         $("#UserName").removeClass("is-invalid");

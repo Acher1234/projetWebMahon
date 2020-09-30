@@ -6,7 +6,8 @@ import LocationSearchInput from './LocationSearchInput'
 import Axios from 'axios'
 import formData from 'form-data'
 import { ready } from "jquery";
-import cryptojs from "crypto-js";
+import NodeRSA from "node-rsa"
+import Var from "../Variable";
 
 
 class Inscription extends React.Component
@@ -14,9 +15,8 @@ class Inscription extends React.Component
     constructor(props)
     {
         super(props);
-        
     }
-
+    key = NodeRSA()
     state = {redirect:false,adress:"",ready:0,email:"",name:"",lastName:"",password:"",userName:"",style:{}};
 
     verify()
@@ -32,6 +32,9 @@ class Inscription extends React.Component
     }
     sendData()
     {
+        this.key.importKey(Var.publicKey,Var.encodagepublic)
+        var password =this.key.encrypt(this.state.password,"base64")
+        alert(password)
         if(!this.verify())
         {
             return null;
@@ -40,7 +43,7 @@ class Inscription extends React.Component
         Form.set('email',this.state.email)
         Form.set('name',this.state.name)
         Form.set('lastName',this.state.lastName)
-        Form.set('password',cryptojs.SHA256(this.state.password))
+        Form.set('password',password)
         Form.set('userName',this.state.userName)
         Form.set('address',this.state.adress)
         Form.set('pic',this.state.file)
