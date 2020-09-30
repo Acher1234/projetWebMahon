@@ -7,11 +7,21 @@ export default class Blog extends React.Component
 {
     constructor(props) {
         super(props);
+        this.update();
+        this.recupAllmessage();
+        this.state = {}
     }
+    async recupAllmessage()
+    {
 
+    }
+    sendMessage()
+    {
+
+    }
     update()
     {
-        const socket = Socket()
+        const socket = Socket(this.props.URL)
     }
 
     render()
@@ -19,7 +29,7 @@ export default class Blog extends React.Component
         return(<><div style={{width:"100vw",height:"80vh",backgroundColor:"rgb(241,243,244)"}}>
 
         </div>
-            <FormControl type="text" style={{marginTop:"1vh",border:"solid 1px black",width:"100vw",height:"10vh"}}></FormControl>
+            <FormControl type="text" value={} style={{marginTop:"1vh",border:"solid 1px black",width:"100vw",height:"10vh"}}></FormControl>
         </>)
     }
 }
