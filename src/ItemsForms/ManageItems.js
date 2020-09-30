@@ -1,4 +1,4 @@
-import {Button, Form, FormControl, InputGroup, Card, Modal} from "react-bootstrap";
+import {Button, Form, FormControl, InputGroup, Card, Modal, Image} from "react-bootstrap";
 import {Trash} from "react-bootstrap-icons"
 import UserProfil from "../userPages/userProfil"
 import React from "react";
@@ -45,9 +45,10 @@ export default class ManageItems extends React.Component {
                         return <Card style={{width: '18rem', display: "inline-block"}}>
                             <Card.Body>
                                 <Card.Title>{value.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">{value.nom}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted">{value.picture}</Card.Subtitle>
+                                <Image  style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + value.imagePath } />
                                 <Card.Text>
-                                    {value.prenom}
+                                    Price/Day : {value.valuePerDay}
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
