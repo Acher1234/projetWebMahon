@@ -40,7 +40,7 @@ export default class Blog extends React.Component
 
     render()
     {
-        return(<><div style={{width:"100vw",height:"80vh",backgroundColor:"rgb(241,243,244)",maxWidth:"100vw",maxHeight:"80vh",overflow:"scroll"}}>
+        return(<><div style={{width:"100vw",height:"80vh",backgroundColor:"rgb(241,243,244)",maxWidth:"100vw",overflowWrap: "break-word",wordWrap: "break-word",maxHeight:"80vh",overflowX:"scroll"}}>
             {this.state.ListMessage.map((value)=>
             {
                 return <Message username={value.usernameAuteur} message={value.message} number={value.nbrLike} id={value._id} function={this.likeMessage.bind(this)}></Message>

@@ -11,7 +11,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null}
+        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null}
         this.recupCoord()
     }
     async recupCoord()
@@ -26,8 +26,8 @@ class GoogleMaps extends React.Component
 
     async callNewList()
     {
-        var List = Axios.post(this.props.URL + "",{radius:"",lat:this.state.latitude,
-            lon:this.state.longitude,cat:this.state.categorie,subCat:this.state.subCategorie},{})
+        var List = Axios.post(this.props.URL + "/getListObjectFromCordinate",{radius:this.state.radius,lat:this.state.latitude,
+            lon:this.state.longitude,cat:this.state.categorie,subCat:this.state.subCategorie},{withCredentials:true})
     }
 
     async getCategorie()
