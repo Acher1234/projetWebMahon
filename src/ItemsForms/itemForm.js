@@ -77,10 +77,10 @@ class ItemForm extends React.Component {
         var x = await Axios.post(this.props.URL + '/createSubCat',{nameSubCat: this.state.subCategorieForm,nameSupCat: this.state.categorieForm},{withCredentials:true})
         if (x.data == 'success')
         {
-           this.setState({showSub:false,subSuccess:true})
+           this.setState({showSub:false,subSuccess:true,categorie:this.state.categorieForm})
         }
         setTimeout(() => {this.setState({subSuccess:false})}, 2500);
-        this.recupListOfSubCat();
+        this.recupListOfSubCat(this.state.categorieForm);
     }
 
     ChangeStateAdress(newadress,readyTemp)
@@ -106,10 +106,13 @@ class ItemForm extends React.Component {
     async recupListOfCategorie()
     {
        var x = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
-       this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
+       this.setState({categorieList : x.data?.tabOfCat})
     }
-    async recupListOfSubCat()
+    async recupListOfSubCat(nameSup)
     {
+        await this.setState({categorie:nameSup});
+        var x = await Axios.post(this.props.URL + '/recupAllSubCatFromSup',{nameSupCat: this.state.categorie},{withCredentials:true});
+        this.setState({subCatList : x.data?.tabOfSubCat})
     }
 
     render() {
@@ -149,7 +152,7 @@ class ItemForm extends React.Component {
                 <Form.Row>
                     <Form.Group as={Col} md={2} controlId="formGridState">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" onChange={(e)=>{this.setState({categorie:e.target.value})}}  defaultValue="i.e: Computer">
+                        <Form.Control as="select" value={this.state.categorie} onChange={(e)=>{this.recupListOfSubCat(e.target.value)}} >
                             {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
                         </Form.Control>
                         <Button onClick={() => this.handleClickCat()} variant="dark"> + Add a new Category </Button>
