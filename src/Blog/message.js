@@ -3,7 +3,7 @@ import Socket from "socket.io-client"
 import {Row} from "react-bootstrap";
 import {SuitHeart} from "react-bootstrap-icons";
 
-export default class message extends React.Component
+export default class Message extends React.Component
 {
     constructor(props) {
         super(props);
@@ -14,10 +14,11 @@ export default class message extends React.Component
     render()
     {
         return(<div style={{borderBottom:"solid black 1px"}}>
+            <h6 style={{marginLeft:"4vw"}}>{this.props.username}</h6>
             <Row>
-                <h6>this.props.username</h6>
-                <p>this.props.message</p>
-                <button onClick={this.props.function(this.props.id)}><SuitHeart/></button>
+                <p style={{marginLeft:"9vw"}}>{this.props.message}</p>
+                <button style={{marginLeft:"80vw"}} onClick={()=>{this.props.function(this.props.id)}}><SuitHeart/></button>
+                <p>{this.props.number}</p>
             </Row>
             </div>)
     }
