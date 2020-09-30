@@ -205,7 +205,7 @@ class ItemForm extends React.Component {
                     </Form.Group>
                 </Form.Row>
 
-                <Button onClick={() => this.sendData()} type="submit">Add your Item</Button>
+                <Button onClick={() => this.sendData()}>Add your Item</Button>
 
                 <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
