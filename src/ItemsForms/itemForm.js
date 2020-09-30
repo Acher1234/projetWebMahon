@@ -1,4 +1,4 @@
-import {Row,Col,Image,Form,Button,Modal} from "react-bootstrap"
+import  {Alert, Row,Col,Image,Form,Button,Modal} from "react-bootstrap"
 import React from "react";
 import Axios from "axios";
 import cryptojs from "crypto-js";
@@ -12,7 +12,8 @@ class ItemForm extends React.Component {
         this.fullname = this.props.user.nom + " " + this.props.user.prenom;
         this.state = {
             categorieList:null,
-            disabledSubCategorie:false,
+            subCatList:null,
+            disabledSubCat:false,
             fullUser: this.fullname,
             itemName:"",
             address : this.props.user.address,
@@ -21,24 +22,26 @@ class ItemForm extends React.Component {
             pricePerDay:"",
             showCat:false,
             showSub:false,
-            categorieForm:"",
-            subCategorieForm:""
+            categorieForm:"", // se refere a modal uniquement
+            subCategorieForm:"" ,// se refere a modal uniquement
+            subSuccess:false,
+            catSuccess:false
         };
         this.recupListOfCategorie();
+        this.recupListOfSubCat();
     }
 
-    sendData()
+    sendData() // a arranger
     {
         if(!this.verify())
         {
             return null;
         }
         var Form = new FormData();
-        Form.set('email',this.state.email)
-        Form.set('name',this.state.name)
-        Form.set('lastName',this.state.lastName)
-        Form.set('password',cryptojs.SHA256(this.state.password))
-        Form.set('userName',this.state.userName)
+        Form.set('proprietaireId',this.state.user)
+        Form.set('categorie',this.state.categorie)
+        Form.set('subCat',this.state.subCat)
+        Form.set('name',this.state.itemName)
         Form.set('address',this.state.adress)
         Form.set('pic',this.state.file)
         Axios({
@@ -60,9 +63,24 @@ class ItemForm extends React.Component {
 
     async sendCatData()
     {
-        await Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
-        this.setState({showCat:false})
+        var x = await Axios.post(this.props.URL + '/createCat',{nameCategorie: this.state.categorieForm},{withCredentials:true})
+        if (x.data == 'success')
+        {
+            this.setState({showCat:false,catSuccess:true})
+        }
+        setTimeout(() => {this.setState({catSuccess:false})}, 2500);
         this.recupListOfCategorie();
+    }
+
+    async sendSubCatData()
+    {
+        var x = await Axios.post(this.props.URL + '/createSubCat',{nameSubCat: this.state.subCategorieForm,nameSupCat: this.state.categorieForm},{withCredentials:true})
+        if (x.data == 'success')
+        {
+           this.setState({showSub:false,subSuccess:true})
+        }
+        setTimeout(() => {this.setState({subSuccess:false})}, 2500);
+        this.recupListOfSubCat();
     }
 
     ChangeStateAdress(newadress,readyTemp)
@@ -90,6 +108,9 @@ class ItemForm extends React.Component {
        var x = await Axios.get(this.props.URL + '/recupAllCategorie',{withCredentials:true});
        this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
     }
+    async recupListOfSubCat()
+    {
+    }
 
     render() {
         const handleSubmit = (event) => {
@@ -99,8 +120,15 @@ class ItemForm extends React.Component {
                 event.stopPropagation();
             }
         };
+
         return (
             <Form onSubmit={handleSubmit}>
+                <Alert transition={true} show={this.state.catSuccess} key='success' variant='success'>
+                    You added a new Categorie.
+                </Alert>
+                <Alert transition={true} show={this.state.subSuccess} key='success' variant='success'>
+                    You added a new Sub-Categorie.
+                </Alert>
                 <Form.Row>
                     <Form.Group as={Col} md="2">
                         <Form.Label>Username</Form.Label>
@@ -128,17 +156,10 @@ class ItemForm extends React.Component {
                     </Form.Group>
                     <Form.Group as={Col} md="2">
                         <Form.Label>Sub-Category</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="i.e: Gaming Computer"
-                            aria-describedby="inputGroupPrepend"
-                            onChange={(event)=>{this.setState({subCat : event.target.value});}}
-                            required
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Please choose a username.
-                        </Form.Control.Feedback>
-                        <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>{' '}
+                        <Form.Control as="select" onChange={(e)=>{this.setState({subCat:e.target.value})}}  defaultValue="i.e: Computer">
+                            {this.state.subCatList?.map(value=>{return <option>{value}</option>})}
+                        </Form.Control>
+                        <Button onClick={() => this.handleClickSub()} variant="dark"> + Add a new Sub-Category </Button>
                     </Form.Group>
                 </Form.Row>
 
@@ -187,7 +208,6 @@ class ItemForm extends React.Component {
 
                 <Button type="submit">Add your Item</Button>
 
-
                 <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add a new Category</Modal.Title>
@@ -212,6 +232,12 @@ class ItemForm extends React.Component {
                         <Modal.Title>Add a new Sub-Category</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <Form.Group md={2} controlId="formGridState">
+                            <Form.Label>Please select a Category</Form.Label>
+                            <Form.Control as="select" onChange={(e)=>{this.setState({categorieForm:e.target.value})}}>
+                                {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group md="2">
                             <Form.Label>Name</Form.Label>
                             <Form.Control
@@ -222,7 +248,7 @@ class ItemForm extends React.Component {
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
-                        <Button onClick={() => console.log("cava ou quoi?")} type="submit">Add a new Sub-Category</Button>
+                        <Button onClick={() => this.sendSubCatData()} type="submit">Add a new Sub-Category</Button>
                     </Modal.Body>
                 </Modal>
             </Form>
