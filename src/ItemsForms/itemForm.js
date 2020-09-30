@@ -110,7 +110,7 @@ class ItemForm extends React.Component {
         if(x.data?.tabOfCat?.length > 0)
         {
             this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
-            this.getSubCategorie(x.data?.tabOfCat[0])
+            this.recupListOfSubCat(x.data?.tabOfCat[0])
         }
     }
     async recupListOfSubCat(nameSup)
