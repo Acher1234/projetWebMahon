@@ -247,7 +247,7 @@ class ItemForm extends React.Component {
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
-                        <Button onClick={() => this.sendSubCatData()} type="submit">Add a new Sub-Category</Button>
+                        <Button onClick={() => this.sendSubCatData()}>Add a new Sub-Category</Button>
                     </Modal.Body>
                 </Modal>
             </Form>

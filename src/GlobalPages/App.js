@@ -12,6 +12,7 @@ import Inscription from "../Connexion/Inscription";
 import Axios from "axios";
 import AdminPages from "../AdminComponants/AdminPages";
 import GoogleMaps from "./GoogleMaps"
+import Blog from "../Blog/BlogPages";
 
 var url = 'http://localhost:8080';
 
@@ -83,6 +84,9 @@ class App extends React.Component
                     </Route>
                     <Route path="/addItems" exact>
                         {this.state.Connection ? <ItemForm URL={url} user={this.state.user} /> : <Redirect to="/"/> }
+                    </Route>
+                    <Route path="/blog" exact>
+                        {this.state.Connection ? <Blog URL={url} user={this.state.user} /> : <Redirect to="/"/> }
                     </Route>
                 </Switch>
            </Router>
