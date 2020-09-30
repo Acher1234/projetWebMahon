@@ -1,6 +1,5 @@
 import React from "react";
 import Socket from "socket.io-client"
-import {Textarea} from "react-bootstrap-icons";
 import {FormControl} from "react-bootstrap";
 
 
