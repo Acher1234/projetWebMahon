@@ -62,7 +62,7 @@ class UserProfil extends React.Component {
         formdata.set('pic',event.target.files[0])
         formdata.set('police',"test")
         await Axios.post(this.props.URL+'/changeUserPics',formdata,{headers:{'Content-Type': 'multipart/form-data' },withCredentials:true})
-        this.props.changeUser()
+        setTimeout(()=>{this.props.changeUser()},2000)
     }
 
     callFileChose()

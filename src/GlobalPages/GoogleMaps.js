@@ -11,7 +11,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null}
+        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
         this.recupCoord()
     }
     async recupCoord()
@@ -21,13 +21,14 @@ class GoogleMaps extends React.Component
         this.setState({latitude:data.data.latitude,longitude:data.data.longitude,connected:this.props.connected})
         this.setState({Loading:false})
         this.getCategorie()
-       // this.getObject()
+        this.callNewList()
     }
 
     async callNewList()
     {
-        var List = Axios.post(this.props.URL + "/getListObjectFromCordinate",{radius:this.state.radius,lat:this.state.latitude,
+        var List =await Axios.post(this.props.URL + "/getListObjectFromCordinate",{radius:this.state.radius,lat:this.state.latitude,
             lon:this.state.longitude,cat:this.state.categorie,subCat:this.state.subCategorie},{withCredentials:true})
+        this.setState({listOfObject:List.data?.data})
     }
 
     async getCategorie()
@@ -90,12 +91,17 @@ class GoogleMaps extends React.Component
                         }}
                         style={{width:"98vw",height:"90vh"}}
                     >
-                            <Marker
-                                position={{
-                                    lat: 0,
-                                    lng: 0
-                                }}>
-                            </Marker>
+                        {this.state.listOfObject?.map((value)=>{
+                            var coo = {
+                                lat: value.lat,
+                                lng: value.lon
+                            }
+                            return <Marker
+                                onClick={()=>{alert(value.objet.name)}}
+                                title={value.objet.name}
+                                position={coo}
+                                />
+                        })}
                             <Marker
                                 title="You"
                                 icon={this.state.connected ? {url:this.imagePath,scaledSize: new this.props.google.maps.Size(64,64)}:{}}
