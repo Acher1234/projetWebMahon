@@ -32,7 +32,6 @@ export default class ManageItems extends React.Component {
     }
 
     async removeObjById(id) {
-        console.log(id,"FEGFNHJ");
         await Axios.post(this.props.URL + "/removeObjById", {id: id}, {withCredentials: true})
         await this.recupAllMyItems();
     }
@@ -52,17 +51,16 @@ export default class ManageItems extends React.Component {
                                 </Card.Text>
                             </Card.Body>
                             <Card.Footer>
-                                <Button type="primary" onClick={() => this.afficheData(value._id)}> affichage</Button>
+                                <Button type="primary" onClick={() => this.getItemById(value._id)}>Show</Button>
                                 <Button onClick={() => this.removeObjById(value._id)}><Trash/></Button>
                             </Card.Footer>
                         </Card>
                     })}
                     <Modal show={this.state.show} onHide={this.onHide.bind(this)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{this.state.user?.nom}</Modal.Title>
+                            <Modal.Title>{this.state.obj?.name}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <UserProfil URL={this.props.URL} user={this.state.user} desactivate={true}/>
                         </Modal.Body>
                     </Modal>
                 </>
