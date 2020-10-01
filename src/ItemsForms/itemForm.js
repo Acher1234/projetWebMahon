@@ -51,7 +51,6 @@ class ItemForm extends React.Component {
     }
     sendDataPaypal(details,data)
     {
-        alert(data.orderID)
         var Form = new FormData();
         Form.set('proprietaireId',this.props.user._id)
         Form.set('categorie',this.state.categorie)
@@ -71,7 +70,6 @@ class ItemForm extends React.Component {
                 }
             })
             .catch((e)=>{alert(e)})
-        alert("hey")
         this.setState({paypalReady:false})
     }
 

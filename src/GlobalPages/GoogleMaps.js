@@ -1,8 +1,9 @@
 import Slider from '@material-ui/core/Slider';
-import {Col, Form, Row,Spinner} from "react-bootstrap";
+import {Col, Form, FormControl, Image, Modal, Row, Spinner} from "react-bootstrap";
 import React from "react";
 import {Map, InfoWindow, Marker,Circle, GoogleApiWrapper} from 'google-maps-react';
 import Axios from "axios";
+import LocationSearchInput from "../Connexion/LocationSearchInput";
 
 
 
@@ -11,7 +12,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,LoadingMap:true,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
+        this.state = {object:null,Loading:true,latitude:0,longitude:0,categorie:null,LoadingMap:true,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
         this.recupCoord()
     }
     async recupCoord()
@@ -90,7 +91,19 @@ class GoogleMaps extends React.Component
                 <Form.Control as="select" onChange={(e)=>{this.setState({subCategorie:e.target.value});setTimeout(()=>{this.callNewList()},100)}}  defaultValue="i.e: Computer">
                     {this.state.subCatList?.map(value=>{return <option>{value}</option>})}
                 </Form.Control>
-                <div>ObjectChose</div>
+                <div style={{color:"white"}}>
+                    {this.state.object && <> <Form.Label>item</Form.Label>
+                        <Form.Control
+                        required
+                        disabled={true}
+                        type="text"
+                        defaultValue={this.state.object?.name}
+                        />
+                        <Form.Label>Picture of the Item</Form.Label>
+                        <Image style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + this.state.object?.imagePath } />
+                        <Form.Label>Address</Form.Label>
+                        <FormControl disabled={true} value={this.state.object?.address}></FormControl></>}
+                </div>
             </Col>
                 <Col>
                     { this.state.LoadingMap ? <Spinner animation="border" variant="primary" />: <Map google={this.props.google}
@@ -106,19 +119,19 @@ class GoogleMaps extends React.Component
                                 lng: value.lon
                             }
                             return <Marker
-                                onClick={()=>{alert(value.objet.name)}}
+                                onClick={()=>{this.setState({object:value.objet})}}
                                 title={value.objet.name}
                                 position={coo}
                                 />
                         })}
-                            <Marker
-                                title="You"
-                                icon={this.state.connected ? {url:this.imagePath,scaledSize: new this.props.google.maps.Size(64,64)}:{}}
-                                position={{
-                                    lat: this.state.latitude,
-                                    lng: this.state.longitude
-                                }}>
-                            </Marker>
+                        <Marker
+                            title="You"
+                            icon={this.state.connected ? {url:this.imagePath,scaledSize: new this.props.google.maps.Size(128,128)}:{}}
+                            position={{
+                                lat: this.state.latitude +0.0001,
+                                lng: this.state.longitude+0.0001
+                            }}>
+                        </Marker>
                         <Circle
                         onCha
                         radius={this.state.radius}
