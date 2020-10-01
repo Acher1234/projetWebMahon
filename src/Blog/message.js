@@ -13,7 +13,7 @@ export default class Message extends React.Component
 
     render()
     {
-        return(<div style={{borderBottom:"solid black 1px",maxWidth:"100vw",overflowWrap: "break-word",wordWrap: "break-word",overflowY:""}}>
+        return(<div style={{borderBottom:"solid black 1px",maxWidth:"87vw",overflowWrap: "break-word",wordWrap: "break-word",overflowY:""}}>
             <h6 style={{marginLeft:"4vw"}}>{this.props.username}</h6>
             <Row>
                 <p style={{marginLeft:"9vw",maxWidth:"70vw",width:"70vw",overflowWrap: "break-word",wordWrap: "break-word"}}>{this.props.message}</p>
