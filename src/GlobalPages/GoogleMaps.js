@@ -11,7 +11,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
+        this.state = {Loading:true,latitude:0,longitude:0,categorie:null,LoadingMap:true,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
         this.recupCoord()
     }
     async recupCoord()
@@ -21,14 +21,20 @@ class GoogleMaps extends React.Component
         this.setState({latitude:data.data.latitude,longitude:data.data.longitude,connected:this.props.connected})
         this.setState({Loading:false})
         this.getCategorie()
-        this.callNewList()
+        this.setState({LoadingMap:false})
     }
 
     async callNewList()
     {
+        if(this.state.subCategorie == "")
+        {
+            this.setState({listOfObject:[]})
+            return ;
+        }
+        this.setState({LoadingMap:true})
         var List =await Axios.post(this.props.URL + "/getListObjectFromCordinate",{radius:this.state.radius,lat:this.state.latitude,
             lon:this.state.longitude,cat:this.state.categorie,subCat:this.state.subCategorie},{withCredentials:true})
-        this.setState({listOfObject:List.data?.data})
+        this.setState({listOfObject:List.data?.data,LoadingMap:false})
     }
 
     async getCategorie()
@@ -46,9 +52,11 @@ class GoogleMaps extends React.Component
         var data = await Axios.post(this.props.URL + '/recupAllSubCatFromSup',{nameSupCat: this.state.categorie},{withCredentials:true});
         if(data.data?.tabOfSubCat?.length > 0)
         {
+            // eslint-disable-next-line no-unused-expressions
+            data.data?.tabOfSubCat.unshift("")
             this.setState({subCatList : data.data?.tabOfSubCat,subCategorie:data.data?.tabOfSubCat[0]})
         }
-        this.callNewList()
+
     }
     async getObject()
     {
@@ -68,7 +76,8 @@ class GoogleMaps extends React.Component
                     defaultValue={600}
                     aria-labelledby="discrete-slider-small-steps"
                     step={100}
-                    onChange={(e,value)=>{this.setState({radius:value});this.callNewList()}}
+                    onChange={(e,value)=>{this.setState({radius:value});}}
+                    onChangeCommitted={(e,value)=>{this.callNewList()}}
                     min={0}
                     max={10000}
                     valueLabelDisplay="auto"
@@ -78,13 +87,13 @@ class GoogleMaps extends React.Component
                     {this.state.categorieList?.map(value=>{return <option>{value}</option>})}
                 </Form.Control>
                 <Form.Label style={{color:"white"}}>Sub-Category</Form.Label>
-                <Form.Control as="select" onChange={(e)=>{this.setState({subCat:e.target.value})}}  defaultValue="i.e: Computer">
+                <Form.Control as="select" onChange={(e)=>{this.setState({subCategorie:e.target.value});setTimeout(()=>{this.callNewList()},100)}}  defaultValue="i.e: Computer">
                     {this.state.subCatList?.map(value=>{return <option>{value}</option>})}
                 </Form.Control>
                 <div>ObjectChose</div>
             </Col>
                 <Col>
-                    <Map google={this.props.google}
+                    { this.state.LoadingMap ? <p>coucou</p>: <Map google={this.props.google}
                         initialCenter={{
                         lat: this.state.latitude,
                         lng: this.state.longitude
@@ -111,6 +120,7 @@ class GoogleMaps extends React.Component
                                 }}>
                             </Marker>
                         <Circle
+                        onCha
                         radius={this.state.radius}
                         center={
                             {lat: this.state.latitude,
@@ -120,7 +130,7 @@ class GoogleMaps extends React.Component
                         strokeWeight={5}
                         fillColor='#FF0000'
                         fillOpacity={0.2}/>
-                    </Map>
+                    </Map>}
            </Col>
             </Row>
             </>
