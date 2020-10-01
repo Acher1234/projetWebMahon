@@ -32,7 +32,7 @@ class ItemForm extends React.Component {
         this.recupListOfSubCat();
     }
 
-    sendData() // a arranger
+    sendData()
     {
         var Form = new FormData();
         Form.set('proprietaireId',this.props.user._id)
@@ -117,6 +117,9 @@ class ItemForm extends React.Component {
         if(x.data?.tabOfSubCat?.length > 0)
         {
             this.setState({subCatList : x.data?.tabOfSubCat,subCat:x.data?.tabOfSubCat[0]})
+        }
+        else{
+            this.setState({subCatList:null});
         }
     }
 

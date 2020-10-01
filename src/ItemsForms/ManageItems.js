@@ -1,14 +1,15 @@
-import {Button, Form, FormControl, InputGroup, Card, Modal, Image} from "react-bootstrap";
+import {Button, Form, FormControl, InputGroup, Card, Modal, Image, Col} from "react-bootstrap";
 import {Trash} from "react-bootstrap-icons"
 import UserProfil from "../userPages/userProfil"
 import React from "react";
 import Axios from "axios";
+import LocationSearchInput from "../Connexion/LocationSearchInput";
 
 
 export default class ManageItems extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {loading: false,objList:null, obj: null, show: false}
+        this.state = {loading: false,objList:null, obj: null, show: false,itemNameModal:null, pricePerDayModal:null,addressModal:null}
         this.recupAllMyItems()
     }
 
@@ -28,12 +29,36 @@ export default class ManageItems extends React.Component {
 
     async getItemById(id) {
         var item = await Axios.post(this.props.URL + "/getItemById", {id: id}, {withCredentials: true})
-        this.setState({obj: item.data, show: true})
+        this.setState({obj: item.data, show: true,itemNameModal:item.data?.name, pricePerDayModal:item.data?.valuePerDay,addressModal:item.data?.address})
     }
 
     async removeObjById(id) {
         await Axios.post(this.props.URL + "/removeObjById", {id: id}, {withCredentials: true})
         await this.recupAllMyItems();
+    }
+
+    async ChangeStateAddress(newadress,readyTemp) {
+        this.setState({addressModal:newadress,ready:readyTemp})
+    }
+
+    editData()
+    {
+        var Form = new FormData();
+        Form.set('proprietaireId',this.props.user._id)
+        Form.set('name',this.state.itemNameModal)
+        Form.set('address',this.state.addressModal)
+        Form.set('valuePerDay',this.state.pricePerDayModal)
+        Axios({
+            method: 'post',
+            url: this.props.URL + '/editObjet',
+            data: Form,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then((response)=>{
+                //handle success
+                console.log(response, "DFGTHYJ");
+            })
+            .catch((e)=>{alert(e)})
     }
 
     render() {
@@ -45,7 +70,7 @@ export default class ManageItems extends React.Component {
                             <Card.Body>
                                 <Card.Title>{value.name}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{value.picture}</Card.Subtitle>
-                                <Image  style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + value.imagePath } />
+                                <Image style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + value.imagePath } />
                                 <Card.Text>
                                     Price/Day : {value.valuePerDay}
                                 </Card.Text>
@@ -61,6 +86,55 @@ export default class ManageItems extends React.Component {
                             <Modal.Title>{this.state.obj?.name}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
+                            <Form.Group >
+                                <Form.Label>Category</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    disabled={true}
+                                    value={this.state.obj?.categorie}
+                                />
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Sub-Category</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    disabled={true}
+                                    value={this.state.obj?.subCat}
+                                />
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Your item</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    defaultValue={this.state.obj?.name}
+                                    onChange={(event)=>{this.setState({itemNameModal : event.target.value});}}
+                                />
+                            </Form.Group>
+                            <Form.Label>Picture of the Item</Form.Label>
+                            <Form.Group >
+                                <Image style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + this.state.obj?.imagePath } />
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Address</Form.Label>
+                                <LocationSearchInput style={{}} address={this.state.obj?.address}  function={this.ChangeStateAddress.bind(this)}></LocationSearchInput>
+                                <Form.Control.Feedback type="invalid">
+                                    Please provide a valid address.
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group >
+                                <Form.Label>Price/Day</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Price/Day"
+                                    defaultValue={this.state.obj?.valuePerDay}
+                                    onChange={(event)=>{this.setState({pricePerDayModal : event.target.value});}}
+                                    required />
+                                <Form.Control.Feedback type="invalid">
+                                    Please provide a valid price.
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        <Button onClick={() => this.editData()}>Edit this Item</Button>
                         </Modal.Body>
                     </Modal>
                 </>
