@@ -12,7 +12,7 @@ class GoogleMaps extends React.Component
     imagePath = null;
     constructor(props) {
         super(props);
-        this.state = {object:null,Loading:true,latitude:0,longitude:0,categorie:null,LoadingMap:true,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
+        this.state = {object:null,Loading:true,email:"",latitude:0,longitude:0,categorie:null,LoadingMap:true,radius:600,categorieList:null,subCategorie:null,subCatList:null,listOfObject:null,objet:null}
         this.recupCoord()
     }
     async recupCoord()
@@ -59,6 +59,12 @@ class GoogleMaps extends React.Component
         }
 
     }
+    async objectChange(value)
+    {
+        var mail = await Axios.post(this.props.URL + "/recupMail",{id:value.objet.proprietaireId},{withCredentials:true})
+        this.setState({object:value.objet,email:mail.data.email})
+
+    }
     async getObject()
     {
         var Marker = await Axios.post(this.props.URL+"/getObjectFromCoordinate",{latitude:this.state.latitude,longitude:this.state.longitude},{withCredentials:true})
@@ -97,10 +103,12 @@ class GoogleMaps extends React.Component
                         required
                         disabled={true}
                         type="text"
-                        defaultValue={this.state.object?.name}
+                        value={this.state.object?.name}
                         />
+                        <Form.Label>contact mail</Form.Label>
+                        <Form.Control disabled={true} value={this.state.email}/>
                         <Form.Label>Picture of the Item</Form.Label>
-                        <Image style={{height:"171px",width:"180px"}} src={this.props.URL + '/image/ItemsImage/' + this.state.object?.imagePath } />
+                        <Image style={{height:"150px",width:"140px"}} src={this.props.URL + '/image/ItemsImage/' + this.state.object?.imagePath } />
                         <Form.Label>Address</Form.Label>
                         <FormControl disabled={true} value={this.state.object?.address}></FormControl></>}
                 </div>
@@ -119,7 +127,7 @@ class GoogleMaps extends React.Component
                                 lng: value.lon
                             }
                             return <Marker
-                                onClick={()=>{this.setState({object:value.objet})}}
+                                onClick={()=>{this.objectChange(value)}}
                                 title={value.objet.name}
                                 position={coo}
                                 />
