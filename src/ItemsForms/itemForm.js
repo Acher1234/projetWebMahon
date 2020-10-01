@@ -51,7 +51,7 @@ class ItemForm extends React.Component {
     }
     sendDataPaypal(details,data)
     {
-        console.log(details,data)
+        alert(data.orderID)
         var Form = new FormData();
         Form.set('proprietaireId',this.props.user._id)
         Form.set('categorie',this.state.categorie)
@@ -60,22 +60,19 @@ class ItemForm extends React.Component {
         Form.set('address',this.state.address)
         Form.set('valuePerDay',this.state.pricePerDay)
         Form.set('picture',this.state.file)
-        Form.set('accptedId',this.state.file)
-        Axios({
-            method: 'post',
-            url: this.props.URL + '/createObjet',
-            data: Form,
-            headers: {'Content-Type': 'multipart/form-data' }
-        })
+        Form.set('acceptId',data.orderID)
+        Axios.post(this.props.URL + '/createObjet',Form,{withCredentials:true,"Content-Type":'multipart/form-data'})
             .then((response)=>{
                 //handle success
-                console.log(response, "DFGTHYJ");
                 if(response.data == "success")
                 {
                     this.setState({objSuccess:true})
+                    this.setState({paypalReady:false})
                 }
             })
             .catch((e)=>{alert(e)})
+        alert("hey")
+        this.setState({paypalReady:false})
     }
 
     async sendCatData()
