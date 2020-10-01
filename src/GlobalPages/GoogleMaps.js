@@ -1,5 +1,5 @@
 import Slider from '@material-ui/core/Slider';
-import {Col, Form, Row} from "react-bootstrap";
+import {Col, Form, Row,Spinner} from "react-bootstrap";
 import React from "react";
 import {Map, InfoWindow, Marker,Circle, GoogleApiWrapper} from 'google-maps-react';
 import Axios from "axios";
@@ -69,8 +69,8 @@ class GoogleMaps extends React.Component
         {
             this.imagePath = this.props.user?.flagImage ? this.props.URL + this.props.user?.imagePath : this.props.user?.urlImagePath;
         }
-        return this.state.Loading ? <p>...Load</p> :
-            <><Row> <Col md={3} style={{backgroundColor:"black",height:"90vh"}}>
+        return this.state.Loading ? <Spinner animation="grow" variant="success" /> :
+            <><Row> <Col md={3} style={{backgroundColor:"black",height:"90vh",marginLeft:"2vw"}}>
                 <h1 style={{color:"white"}}>SlideRange :</h1>
                 <Slider
                     defaultValue={600}
@@ -93,7 +93,7 @@ class GoogleMaps extends React.Component
                 <div>ObjectChose</div>
             </Col>
                 <Col>
-                    { this.state.LoadingMap ? <p>coucou</p>: <Map google={this.props.google}
+                    { this.state.LoadingMap ? <Spinner animation="border" variant="primary" />: <Map google={this.props.google}
                         initialCenter={{
                         lat: this.state.latitude,
                         lng: this.state.longitude
