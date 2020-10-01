@@ -3,7 +3,9 @@ import React from "react";
 import  FormData from "form-data"
 import Axios from "axios";
 import cryptojs from "crypto-js";
+import NodeRSA from "node-rsa"
 import LocationSearchInput from "../Connexion/LocationSearchInput";
+import Var from "../Variable";
 
 
 class UserProfil extends React.Component {
@@ -11,6 +13,7 @@ class UserProfil extends React.Component {
         super(props);
         this.state = {show:false,showpassword:false,showlocation:false,text:"",type:"",ready:0,Alert:false}
     }
+    key = NodeRSA()
 
     changeUsername(e)
     {
@@ -49,9 +52,21 @@ class UserProfil extends React.Component {
             this.setState({show:false,showpassword:false,showlocation:false})
             return;
         }
-        await Axios.post(this.props.URL + "/changeDataUser",{type:this.state.type,data:this.state.text},{withCredentials:true})
-        this.props.changeUser()
-        this.setState({show:false,showpassword:false,showlocation:false})
+        if(this.state.type == "password")
+        {
+            this.key.importKey(Var.publicKey,Var.encodagepublic)
+            var password =this.key.encrypt(this.state.text,"base64")
+            await Axios.post(this.props.URL + "/changeDataUser",{type:this.state.type,data:password},{withCredentials:true})
+            this.props.changeUser()
+            this.setState({show:false,showpassword:false,showlocation:false})
+        }
+        else
+        {
+            await Axios.post(this.props.URL + "/changeDataUser",{type:this.state.type,data:this.state.text},{withCredentials:true})
+            this.props.changeUser()
+            this.setState({show:false,showpassword:false,showlocation:false})
+        }
+
 
     }
 
@@ -140,7 +155,7 @@ class UserProfil extends React.Component {
                 onHide={this.handleClose.bind(this)}
                 backdrop="static"
             >
-                <Form.Control style={{width:"25vw"}} type="password" onChange={(event)=>{this.setState({text : cryptojs.SHA256(event.target.value).toString()});}}></Form.Control>
+                <Form.Control style={{width:"25vw"}} type="password" onChange={(event)=>{this.setState({text : event.target.value});}}></Form.Control>
                 <Button variant="danger" onClick={this.handleClose.bind(this)}>
                     exit
                 </Button>

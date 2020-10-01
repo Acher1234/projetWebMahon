@@ -34,7 +34,6 @@ class Inscription extends React.Component
     {
         this.key.importKey(Var.publicKey,Var.encodagepublic)
         var password =this.key.encrypt(this.state.password,"base64")
-        alert(password)
         if(!this.verify())
         {
             return null;
