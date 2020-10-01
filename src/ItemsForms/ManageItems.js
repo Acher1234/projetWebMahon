@@ -41,24 +41,21 @@ export default class ManageItems extends React.Component {
         this.setState({addressModal:newadress,ready:readyTemp})
     }
 
-    editData()
+    async editData()
     {
-        var Form = new FormData();
-        Form.set('proprietaireId',this.props.user._id)
-        Form.set('name',this.state.itemNameModal)
-        Form.set('address',this.state.addressModal)
-        Form.set('valuePerDay',this.state.pricePerDayModal)
-        Axios({
-            method: 'post',
-            url: this.props.URL + '/editObjet',
-            data: Form,
-            headers: {'Content-Type': 'multipart/form-data' }
-        })
-            .then((response)=>{
-                //handle success
-                console.log(response, "DFGTHYJ");
-            })
-            .catch((e)=>{alert(e)})
+        var x = await Axios.post(
+            this.props.URL + '/editObjet',
+            {
+                proprietaireId:this.props.user._id,
+                objID:this.state.obj?._id,
+                name:this.state.itemNameModal,
+                address :this.state.addressModal,
+                valuePerDay: this.state.pricePerDayModal
+            },{withCredentials:true})
+            if (x.data == 'success'){
+                this.setState({show: false});
+                this.recupAllMyItems();
+            }
     }
 
     render() {
