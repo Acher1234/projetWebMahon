@@ -18,8 +18,7 @@ export default class ManageItems extends React.Component {
     }
 
     async recupAllMyItems() {
-        var proprioID = this.props.user._id;
-        var allMyItems = await Axios.post(this.props.URL + "/getAllObjfromUser", {proprioID}, {withCredentials: true})
+        var allMyItems = await Axios.post(this.props.URL + "/getAllObjfromUser", {id:this.props.user._id}, {withCredentials: true})
         if (allMyItems.data == null) {
             this.setState({objList: null})
         } else {

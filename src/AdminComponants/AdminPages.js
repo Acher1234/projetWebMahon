@@ -4,19 +4,24 @@ import {Redirect} from "react-router-dom";
 import {Trash} from "react-bootstrap-icons"
 import UserProfil from "../userPages/userProfil"
 import React from "react";
+import ManageItems from "../ItemsForms/ManageItems"
 import Axios from "axios";
 
 
 export default class AdminPages extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {redirect:false,listOfpersonal:null,loading:true,show:false,user:null}
+        this.state = {redirect:false,listOfpersonal:null,loading:true,show:false,user:null,showObjectList:false}
         this.userRecup()
     }
 
     async onHide()
     {
         this.setState({show:false})
+    }
+    async onHideObjectList()
+    {
+        this.setState({showObjectList:false})
     }
     async userRecup()
     {
@@ -35,7 +40,6 @@ export default class AdminPages extends React.Component {
 
     async afficheData(id)
     {
-        alert(id)
         var user =await Axios.post(this.props.URL + "/recupUserOnId",{id:id},{withCredentials:true})
         this.setState({user:user.data})
         this.setState({show:true})
@@ -94,6 +98,16 @@ export default class AdminPages extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <UserProfil URL={this.props.URL} user={this.state.user} desactivate={true}/>
+                        <Button onClick={()=>this.setState({show:false,showObjectList:true})}>Voir Items</Button>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal show={this.state.showObjectList} onHide={this.onHideObjectList.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{this.state.user?.nom}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <ManageItems URL={this.props.URL} user={this.state.user}/>
                     </Modal.Body>
                 </Modal>
             </>

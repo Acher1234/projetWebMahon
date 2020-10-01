@@ -4,6 +4,8 @@ import Axios from "axios";
 import cryptojs from "crypto-js";
 import LocationSearchInput from "../Connexion/LocationSearchInput";
 import UserProfil from "../userPages/userProfil";
+import {PayPalButton} from "react-paypal-button-v2";
+import Var from "../Variable"
 
 class ItemForm extends React.Component {
 
@@ -27,13 +29,29 @@ class ItemForm extends React.Component {
             subSuccess:false,
             catSuccess:false,
             objSuccess:false,
+            file:null,
+            paypalReady:false
         };
         this.recupListOfCategorie();
         this.recupListOfSubCat();
     }
 
-    sendData()
+    Paypalintegration() // a arranger
     {
+        if(this.state.itemName == "" || this.state.pricePerDay == "" || parseInt(this.state.pricePerDay) == NaN || this.state.file == null)
+        {
+            this.setState({paypalReady:false})//true
+            return;
+        }
+        this.setState({paypalReady:true})
+    }
+    closePaypal() // a arranger
+    {
+        this.setState({paypalReady:false})
+    }
+    sendDataPaypal(details,data)
+    {
+        console.log(details,data)
         var Form = new FormData();
         Form.set('proprietaireId',this.props.user._id)
         Form.set('categorie',this.state.categorie)
@@ -42,6 +60,7 @@ class ItemForm extends React.Component {
         Form.set('address',this.state.address)
         Form.set('valuePerDay',this.state.pricePerDay)
         Form.set('picture',this.state.file)
+        Form.set('accptedId',this.state.file)
         Axios({
             method: 'post',
             url: this.props.URL + '/createObjet',
@@ -80,7 +99,6 @@ class ItemForm extends React.Component {
         setTimeout(() => {this.setState({subSuccess:false})}, 2500);
         this.recupListOfSubCat(this.state.categorieForm);
     }
-
     ChangeStateAdress(newadress,readyTemp)
     {
         this.setState({address:newadress,ready:readyTemp})
@@ -109,6 +127,9 @@ class ItemForm extends React.Component {
             this.setState({categorieList : x.data?.tabOfCat,categorie:x.data?.tabOfCat[0]})
             this.recupListOfSubCat(x.data?.tabOfCat[0])
         }
+        else{
+            this.setState({subCatList:null});
+        }
     }
     async recupListOfSubCat(nameSup)
     {
@@ -117,9 +138,6 @@ class ItemForm extends React.Component {
         if(x.data?.tabOfSubCat?.length > 0)
         {
             this.setState({subCatList : x.data?.tabOfSubCat,subCat:x.data?.tabOfSubCat[0]})
-        }
-        else{
-            this.setState({subCatList:null});
         }
     }
 
@@ -208,8 +226,23 @@ class ItemForm extends React.Component {
                     </Form.Group>
                 </Form.Row>
 
-                <Button onClick={() => this.sendData()}>Add your Item</Button>
+                <Button onClick={() => this.Paypalintegration()}>Add your Item</Button>
 
+
+                <Modal show={this.state.paypalReady} onHide={this.closePaypal.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>pay your Items</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <PayPalButton
+                            amount={1}
+                            options={{
+                                clientId:Var.clientPaypalId
+                            }}
+                            onSuccess={this.sendDataPaypal.bind(this)}
+                        />
+                    </Modal.Body>
+                </Modal>
                 <Modal show={this.state.showCat} onHide={this.onHide.bind(this)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add a new Category</Modal.Title>
